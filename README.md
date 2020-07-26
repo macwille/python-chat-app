@@ -17,3 +17,7 @@ The application can perform following functions when it's finished:
 * Can search for messages
 
 * Can create private rooms with acces granted to spesific users
+
+### Useful commands
+
+* `set FLASK_enviroment=develpoment`
