@@ -20,8 +20,10 @@ The application can perform following functions when it's finished:
 
 ### Useful commands (Windows)
 
-* `set FLASK_enviroment=develpoment` - Sets flask enviroment to development mode.
-
 * `py -3 -m venv venv` - Creates python 3 virtual enviroment folder named 'venv'.
 
 * `ven\Scripts\activate` - Activates (venv) from the created venv folder.
+
+* `set FLASK_ENV=develpoment` - Sets flask enviroment to development mode.
+
+* `flask run` - Starts the app on a development server (default port 5000) can be accessed using 'https://localhost:5000'.
