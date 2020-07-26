@@ -26,4 +26,4 @@ The application can perform following functions when it's finished:
 
 * `set FLASK_ENV=develpoment` - Sets flask enviroment to development mode.
 
-* `flask run` - Starts the app on a development server (default port 5000) can be accessed using 'https://localhost:5000'.
+* `flask run` - Starts the app on a development server (uses port 5000) defined in app.py
