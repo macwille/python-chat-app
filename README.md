@@ -18,6 +18,10 @@ The application can perform following functions when it's finished:
 
 * Can create private rooms with acces granted to spesific users
 
-### Useful commands
+### Useful commands (Windows)
 
-* `set FLASK_enviroment=develpoment`
+* `set FLASK_enviroment=develpoment` - Sets flask enviroment to development mode.
+
+* `py -3 -m venv venv` - Creates python 3 virtual enviroment folder named 'venv'.
+
+* `ven\Scripts\activate` - Activates (venv) from the created venv folder.
