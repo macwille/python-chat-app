@@ -20,10 +20,8 @@ The application can perform following functions when it's finished:
 
 ### Command prompts (Windows)
 
-* `py -3 -m venv venv` - Creates python 3 virtual enviroment folder named 'venv'.
+* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
 
 * `ven\Scripts\activate` - Activates (venv) from the created venv folder.
-
-* `set FLASK_ENV=develpoment` - Sets flask enviroment to development mode.
 
 * `flask run` - Starts the app on a development server (uses port 5000) defined in app.py
