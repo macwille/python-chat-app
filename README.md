@@ -18,7 +18,7 @@ The application can perform following functions when it's finished:
 
 * Can create private rooms with acces granted to spesific users
 
-### Useful commands (Windows)
+### Command prompts (Windows)
 
 * `py -3 -m venv venv` - Creates python 3 virtual enviroment folder named 'venv'.
 
