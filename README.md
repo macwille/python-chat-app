@@ -1,6 +1,6 @@
 # Chat app
 
-Python / Flask web application to create chat enviroment for different users with SQL database.
+Python / Flask web application to create chat enviroment for different users using SQL database.
 
 ## Definition
 
