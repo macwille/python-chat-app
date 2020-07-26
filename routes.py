@@ -7,6 +7,6 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/login")
+@app.route("/login/")
 def login():
-    return "LOGIN"
+    return render_template("login.html")
