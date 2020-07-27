@@ -1,9 +1,9 @@
-
 from flask import Flask
-from flask import render_template, redirect, request
-
 
 app = Flask(__name__)
+
+# Checks for template changes when reloading web page.
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 import routes
