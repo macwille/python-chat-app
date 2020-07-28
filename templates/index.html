@@ -2,20 +2,39 @@
 
 <head>
     <h1>Keskustelualue</h1>
-    <p>Kirjaudu sisään liittyäksesi keskusteluun</p>
+
+    {% if session.username%}
+
+    <p>Olet kirjautunut nimellä {{ session.username }}</p>
+    <a href="/logout">Kirjaudu ulos</a>
+
+    {% else %}
+
+
+    <div>
+        <h2>Et ole kirjautunut sisään</h2>
+        <p>
+        <form action="/login" method="POST">
+            <p>Käyttjänimi:<br>
+                <input type="text" name="username"></p>
+
+            <p>Salasana:<br>
+                <input type="password" name="password"></p>
+            <input type="submit" value="Kirjaudu">
+        </form>
+        </p>
+    </div>
+
+
+    {% endif %}
+
     <h2>Huoneet</h2>
     <ul>
         <li>
             <a href="/room">General</a>
         </li>
+        <li>
+            <a href="/test">Test database</a>
+        </li>
     </ul>
 </head>
-
-<body>
-    <div>
-        <h2>Et ole kirjautunut sisään</h2>
-        <p>
-            <a href="/login">Kirjaudu</a>
-        </p>
-    </div>
-</body>

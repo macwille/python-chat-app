@@ -1,0 +1,15 @@
+<title>Test database</title>
+
+<div>
+    <h1>TEST</h1>
+    <h2>
+        Viestien määrä: {{ count }}
+    </h2>
+    <h4>Viestit:</h4>
+    <hr>
+    {% for message in messages %}
+    {{ message[0] }}
+    <hr>
+    {% endfor %}
+
+</div>
