@@ -26,6 +26,6 @@ The application can perform following functions when it's finished:
 
 * `venv\Scripts\activate` - Activates (venv) from the created venv folder.
 
-* (venv) `pip install -r requirements.txt` installs dependecies dependencies.
+*  inside (venv) `pip install -r requirements.txt` installs dependecies dependencies.
 
-* `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+* (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
