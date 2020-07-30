@@ -1,0 +1,95 @@
+a {
+    text-decoration: none;
+    color: #ccc;
+    font: 18px/1 Helvetica, Verdana, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: coral;
+}
+
+input[type="text"] {
+    font: 15px/1 Helvetica, Verdana, sans-serif;
+}
+
+input[type="textarea"] {
+    font: 15px/1 Helvetica, Verdana, sans-serif;
+}
+
+input[type="submit"] {
+    text-transform: uppercase;
+    font: 12px/1 Helvetica, Verdana, sans-serif;
+}
+
+section {
+    margin: 0;
+    text-decoration: none;
+    color: darkslategray;
+    font: 18px/1 Helvetica, Verdana, sans-serif;
+    text-transform: uppercase;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    padding: 20px;
+}
+
+section {
+    margin: 20;
+    padding: 40;
+}
+
+head {
+    float: top;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    padding: 20px;
+}
+
+nav {
+    margin: 50px;
+    padding: 20;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+nav ul {
+    overflow: auto;
+    list-style-type: none;
+}
+
+nav li {
+    height: 25px;
+    float: left;
+    margin-right: 0px;
+    border-right: 1px solid #aaa;
+    padding: 0 20px;
+}
+
+nav li:first-child {
+    color: darkslategray;
+}
+
+nav li:last-child {
+    border-right: none;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ccc;
+    font: 25px/1 Helvetica, Verdana, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: coral;
+}
+
+textarea {
+    resize: none;
+    font: font: 25px/1 Helvetica, Verdana, sans-serif;
+}

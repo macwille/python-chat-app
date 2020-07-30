@@ -1,15 +1,33 @@
-<title>Keskustelualue</title>
+{% extends "base.html" %}
 
-<body>
-    <div>
-        <h2>Huone </h2>
-        <h3>Viestejä </h3>
-        
+{% block header %}
+<h1>{% block title %} Room - {{ id }}:{% endblock %} </h1>
+{% endblock %}
 
-    </div>
-    <div>
-        <p>
-            <a href="/">Palaa etusivulle</a>
-        </p>
-    </div>
-</body>
+{% block content%}
+
+<div>
+    {% for message in messages %}
+    {{ message[0] }}
+    <hr>
+    {% endfor %}
+</div>
+<br>
+
+{% if session.username %}
+<form action="/send" method="POST">
+    {{ session.username }}:
+    <textarea name="content" rows="3" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Send">
+</form>
+{% else %}
+<p> You must be logged in to send messages to this room.</p>
+<br>
+<a href="/">Log in</a>
+<br>
+<a href="register.html">Register</a>
+
+{% endif %}
+
+{% endblock %}

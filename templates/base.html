@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %} - Chat404</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+<head id="nav-background">
+    <nav>
+        <ul>
+            <li><a href="/">Chat404</a></li>
+            <li><a href="/subjects">Rooms</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/logout">Log out</a></li>
+        </ul>
+    </nav>
+</head>
+<hr>
+
+<body>
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+            <br>
+        </header>
+        <div>
+            {% block content %}{%  endblock %}
+        </div>
+    </section>
+</body>

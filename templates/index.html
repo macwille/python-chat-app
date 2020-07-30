@@ -1,40 +1,28 @@
-<title>Keskustelualue</title>
+{% extends "base.html" %}
 
-<head>
-    <h1>Keskustelualue</h1>
-
-    {% if session.username%}
-
-    <p>Olet kirjautunut nimellä {{ session.username }}</p>
-    <a href="/logout">Kirjaudu ulos</a>
-
-    {% else %}
+{% block header %}
+<h1>{% block title %} Welcome to Chat404 {% endblock %} </h1>
 
 
-    <div>
-        <h2>Et ole kirjautunut sisään</h2>
-        <p>
-        <form action="/login" method="POST">
-            <p>Käyttjänimi:<br>
-                <input type="text" name="username"></p>
+{% endblock %}
 
-            <p>Salasana:<br>
-                <input type="password" name="password"></p>
-            <input type="submit" value="Kirjaudu">
-        </form>
-        </p>
-    </div>
+{% block content %}
 
+{% if session.username %}
+<p>You are logged in as '{{ session.username }}' </p>
+<br>
+<a href="/logout">Log out</a>
 
-    {% endif %}
+{% else %}
+<h4>Log in</h4>
 
-    <h2>Huoneet</h2>
-    <ul>
-        <li>
-            <a href="/room">General</a>
-        </li>
-        <li>
-            <a href="/test">Test database</a>
-        </li>
-    </ul>
-</head>
+<form action="/login" method="POST">
+    <p>Tunnus:<br>
+        <input type="text" name="username" maxlength="10" required></p>
+    <p>Salasana:<br>
+        <input type="password" name="password" maxlength="20" required></p>
+    <input type="submit" value="Log in">
+</form>
+{% endif %}
+
+{% endblock %}

@@ -29,14 +29,38 @@ def logout():
     return redirect("/")
 
 
-@app.route("/room/")
-def room():
-    return render_template("room.html")
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+
+@app.route("/subjects")
+def subjects():
+    return render_template("subjects.html")
+
+
+@app.route("/room/<int:id>")
+def room(id):
+    result = db.session.execute("SELECT content FROM messages")
+    messages = result.fetchall()
+    return render_template("room.html", messages=messages, id=id)
 
 
 @app.route("/send", methods=["POST"])
 def send():
     return redirect("/")
+
+
+@app.route("/search")
+def search():
+    result = "Time to search"
+    return render_template("search.html", result=result)
+
+
+@app.route("/result")
+def result():
+    query = request.args["query"]
+    return render_template("search.html", result=query)
 
 
 @app.route("/test")

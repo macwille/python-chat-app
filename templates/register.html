@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content%}
+
+{% if session.username %}
+<p>You are already logged in as '{{ session.username }}' </p>
+<br>
+<a href="/logout">Log out</a>
+
+{% else %}
+<h2></h2>
+
+<form action="/login" method="POST">
+    <p>Nickname:<br>
+        <input type="text" name="username" maxlength="10" required></p>
+    <p>Password:<br>
+        <input type="password" name="password" maxlength="20" required></p><br>
+
+    <p>Gender:<br>
+    <p>
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label><br>
+    </p>
+    <p> <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br>
+    </p>
+    <p> <input type="radio" id="helicopter" name="gender" value="helicopter">
+        <label for="helicopter">Helicopter</label>
+    </p>
+    <p><input type="submit" value="Register"> </p>
+
+</form>
+{% endif %}
+
+{% endblock %}

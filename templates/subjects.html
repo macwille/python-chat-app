@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>{% block title %} Subjects{% endblock %} </h1>
+{% endblock %}
+
+{% block content%}
+
+{% if session.username %}
+<p> Logged in as '{{ session.username }}'' </p>
+<div>
+    <h3>General:</h3>
+    <ul>
+        <li> <a href="/room/1">Test Room</a></li>
+    </ul>
+</div>
+
+{% else %}
+<p>You are not logged in</p>
+<br>
+<p>You must be logged in to view rooms</p>
+<a href="/">Log in</a>
+{% endif %}
+
+{% endblock %}
