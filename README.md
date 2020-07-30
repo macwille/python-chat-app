@@ -6,17 +6,19 @@ Python / Flask web application to create chat enviroment for different users usi
 
 The application can perform following functions when it's finished: 
 
-* Chats divided into rooms
+* Has chat rooms where registered users can leave messages
 
-* User can be either normal user or admin
+* Rooms are divided to subject areas and some areas can be limited to certain users
 
-* Can create account you can log in with
+* User can create an unique username
 
-* User can edit or delete his/her messages
+* User can edit or delete his or her messages
 
-* Can search for messages
+* User can search for messages
 
-* Can create private rooms with acces granted to spesific users
+* Users can create private subject areas
+
+* Application has support for an admin user with rights to moderate all rooms and users
 
 ### Command prompts (Windows)
 
