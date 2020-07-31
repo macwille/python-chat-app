@@ -3,7 +3,8 @@ CREATE TABLE users
     id SERIAL PRIMARY KEY,
     name varchar(21) NOT NULL,
     password TEXT NOT NULL,
-    role INTEGER
+    role INTEGER,
+    CONSTRAINT unique_name UNIQUE(name)
 );
 
 CREATE TABLE messages
@@ -28,6 +29,8 @@ CREATE TABLE subjects
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     content TEXT
+    CONSTRAINT unique_name UNIQUE(name)
+    
 );
 
 CREATE TABLE subject_rights
