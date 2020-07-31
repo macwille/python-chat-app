@@ -1,6 +1,8 @@
 # Chat app
 
-Python / Flask web application to create chat enviroment for different users using SQL database.
+### WORK IN PROGRESS
+
+Flask enviroment based Python web application for running a chat room website with backend database using PostgreSQL.
 
 ## Definition
 
