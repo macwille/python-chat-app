@@ -22,13 +22,26 @@ The application can perform following functions when it's finished:
 
 * Application has support for an admin user with rights to moderate all rooms and users
 
-### Command prompts (Windows)
+### Command prompts
+#### Linux
 
-* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
+* `python3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'. (Inside project folder)
+
+* `source venv/bin/activate` - Activates (venv) from the created venv folder.
+
+* (venv) `pip install -r requirements.txt` installs dependecies dependencies.
+
+* (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+
+* (venv) `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql)
+
+#### Windows
+
+* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'. (Inside project folder)
 
 * `venv\Scripts\activate` - Activates (venv) from the created venv folder.
 
-*  inside (venv) `pip install -r requirements.txt` installs dependecies dependencies.
+*  (venv) `pip install -r requirements.txt` installs dependecies dependencies.
 
 * (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
 
