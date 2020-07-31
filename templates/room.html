@@ -1,22 +1,25 @@
 {% extends "base.html" %}
 
 {% block header %}
-<h1>{% block title %} Room - {{ id }}:{% endblock %} </h1>
+<h1>{% block title %} {{ name }} {% endblock %} </h1>
+<h4>Owner: {{ owner }}</h4>
 {% endblock %}
 
 {% block content%}
 
 <div>
+    <h3>Messages</h3>
+    <br>
     {% for message in messages %}
     {{ message[0] }}
-    <hr>
     {% endfor %}
 </div>
 <br>
 
+
 {% if session.username %}
 <form action="/send" method="POST">
-    {{ session.username }}:
+    {{ session.username }}:<br>
     <textarea name="content" rows="3" cols="40"></textarea>
     <br>
     <input type="submit" value="Send">
@@ -26,7 +29,7 @@
 <br>
 <a href="/">Log in</a>
 <br>
-<a href="register.html">Register</a>
+<a href="/register.html">Register</a>
 
 {% endif %}
 

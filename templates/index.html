@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
+
 {% block header %}
-<h1>{% block title %} Welcome to Chat404 {% endblock %} </h1>
-
-
+<h1>Welcome to {% block title %} Chat404 {% endblock %} </h1>
 {% endblock %}
 
 {% block content %}
 
 {% if session.username %}
-<p>You are logged in as '{{ session.username }}' </p>
-<br>
+<h4>You are logged in as '{{ session.username }}' </h4>
+To chat go to <a href="/subject">Rooms</a>
+<p>or</p>
 <a href="/logout">Log out</a>
 
 {% else %}
@@ -18,10 +18,15 @@
 
 <form action="/login" method="POST">
     <p>Tunnus:<br>
-        <input type="text" name="username" maxlength="10" required></p>
+        <input type="text" name="username" maxlength="20" required></p>
     <p>Salasana:<br>
-        <input type="password" name="password" maxlength="20" required></p>
-    <input type="submit" value="Log in">
+        <input type="password" name="password" maxlength="30" required></p>
+    <input type="submit" value="Log in"><br>
+    <hr>
+    <p>New user?</p>
+    <p>
+        <a href="/register">Register here</a>
+    </p>
 </form>
 {% endif %}
 

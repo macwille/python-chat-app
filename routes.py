@@ -3,6 +3,7 @@ from os import getenv
 from flask import Flask
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -25,8 +26,12 @@ def login():
 
 @app.route("/logout")
 def logout():
-    del session["username"]
-    return redirect("/")
+    try:
+        del session["username"]
+    except:
+        return redirect("/")
+    else:
+        return redirect("/")
 
 
 @app.route("/register")
@@ -34,16 +39,40 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/subjects")
+@app.route("/registerNew", methods=["POST", "GET"])
+def registerNew():
+    username = request.form["username"]
+    password = request.form["password"]
+    hash_value = generate_password_hash(password)
+    try:
+        sql = "INSERT INTO users (name,password, role) VALUES (:name,:password, 1)"
+        db.session.execute(sql, {"name": username, "password": hash_value})
+        db.session.commit()
+    except:
+        print("Username already taken")
+        return redirect("/register")
+    else:
+        session["username"] = username
+        return redirect("/register")
+
+
+@app.route("/subject")
 def subjects():
-    return render_template("subjects.html")
+    return render_template("subject.html")
 
 
-@app.route("/room/<int:id>")
+@app.route("/room/id=<int:id>")
 def room(id):
-    result = db.session.execute("SELECT content FROM messages")
-    messages = result.fetchall()
-    return render_template("room.html", messages=messages, id=id)
+    try:
+        sql = "SELECT * FROM rooms WHERE id=:id"
+        result = db.session.execute(sql, {"id": id})
+        name = result.fetchone()[1]
+
+    except:
+        print("Not found")
+        return render_template("room.html", name="ROOM NOT FOUND")
+    else:
+        return render_template("room.html", name=name)
 
 
 @app.route("/send", methods=["POST"])

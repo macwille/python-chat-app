@@ -4,7 +4,7 @@ CREATE TABLE users
     name varchar(21) NOT NULL,
     password TEXT NOT NULL,
     role INTEGER,
-    CONSTRAINT unique_name UNIQUE(name)
+    CONSTRAINT unique_username UNIQUE(name)
 );
 
 CREATE TABLE messages
@@ -28,9 +28,9 @@ CREATE TABLE subjects
 (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    content TEXT
-    CONSTRAINT unique_name UNIQUE(name)
-    
+    content TEXT,
+    CONSTRAINT unique_subjectname UNIQUE(name)
+
 );
 
 CREATE TABLE subject_rights
