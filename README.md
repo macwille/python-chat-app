@@ -30,4 +30,4 @@ The application can perform following functions when it's finished:
 
 * (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
 
-* (venv) `psql -U postgres -d chat < schema.sql` Crates SQL tables to database 'chat' as user 'postgres'. 
+* (venv) `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql)
