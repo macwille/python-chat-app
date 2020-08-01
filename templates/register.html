@@ -12,15 +12,17 @@
 <a href="/logout">Log out</a>
 
 {% else %}
-<h2></h2>
 
 <form action="/registerNew" method="POST">
-    <p>Username:<br>
-        <input type="text" name="username" maxlength="20" required></p>
-    <p>Password:<br>
-        <input type="password" name="password" maxlength="30" required></p><br>
+    <fieldset>
+        <legend>Register</legend>
+        <p>Username:<br>
+            <input type="text" name="username" maxlength="20" required></p>
+        <p>Password:<br>
+            <input type="password" name="password" maxlength="30" required></p><br>
 
-    <input type="submit" value="Register">
+        <input type="submit" value="Register">
+    </fieldset>
 </form>
 {% endif %}
 

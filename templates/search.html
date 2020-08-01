@@ -14,13 +14,16 @@
     <h4>results:</h4>
     <p> {{result}}</p>
 </div>
-<hr>
 
 
 <form action="/result" method="GET">
-    Hakusana:<input type="text" name="query"></input>
-    <br>
-    <input type="submit" value="Send">
+    <fieldset>
+        <legend>Search &#128269</legend>
+        <p>
+            <textarea name="content" rows="3" cols="40"></textarea>
+        </p>
+        <input type="submit" value="Send">
+    </fieldset>
 </form>
 
 {% else %}

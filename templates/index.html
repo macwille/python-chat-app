@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-
+{% block title %} Chat404 {% endblock %}
 
 {% block header %}
-<h1>Welcome to {% block title %} Chat404 {% endblock %} </h1>
+<h1>Chat404</h1>
+<p> Log in to chat!</p>
 {% endblock %}
 
 {% block content %}
@@ -14,19 +15,20 @@ To chat go to <a href="/subject">Rooms</a>
 <a href="/logout">Log out</a>
 
 {% else %}
-<h4>Log in</h4>
 
 <form action="/login" method="POST">
-    <p>Tunnus:<br>
-        <input type="text" name="username" maxlength="20" required></p>
-    <p>Salasana:<br>
-        <input type="password" name="password" maxlength="30" required></p>
-    <input type="submit" value="Log in"><br>
-    <hr>
-    <p>New user?</p>
-    <p>
-        <a href="/register">Register here</a>
-    </p>
+    <fieldset>
+        <legend>Log in</legend>
+        <p>Username:<br>
+            <input type="text" name="username" maxlength="20" required></p>
+        <p>Password:<br>
+            <input type="password" name="password" maxlength="30" required></p>
+        <input type="submit" value="Log in"><br>
+        <p>New user?</p>
+        <p>
+            <a href="/register">Register here</a>
+        </p>
+    </fieldset>
 </form>
 {% endif %}
 
