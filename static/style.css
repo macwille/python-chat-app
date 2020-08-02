@@ -1,74 +1,90 @@
-* {
-    background-color: antiquewhite;
-    margin: 0;
-    padding: 0;
-    font-family: Helvetica, Verdana, sans-serif;
-    color: darkslategray;
-}
 body {
-    margin: 1vh 2vh;
+    background-color: dimgrey;
+    font-family: Helvetica, Verdana, sans-serif;
+    max-width: 45em;
+    margin: auto;
 }
 
 header {
-    float: top;
     height: 8vh;
     background-size: auto;
 }
 
-
-.content {
-    font: 18px/1;
-    text-transform: uppercase;
-    padding: 20px;
-    margin-top: 3vh;
-    margin-bottom: 10vh;
-    min-height: 80vh;
+.mainTitle {
+    background: coral;
+    font-weight: bold;
+    padding: 2em 1em;
+    font-size: 2em;
 }
 
-.main {
-    float: top;
-    margin: 5vh;
+.mainTitle h1 {
+    max-width: 45em;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5vh 20vh;
+    overflow: hidden;
 }
 
-.main ul {
-    list-style-type: none;
-    float: left;
-    min-width: 100vh;
-    min-height: 10vh;
+.navbar {
+    background: darkslategray;
 }
 
-.main ul li {
+.navbar ul {
+    max-width: 45em;
+    top: 4vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    margin: auto;
+    float: center;
+}
+
+.navbar ul li {
     display: inline-block;
+    padding: 5px 2px;
 }
 
-.main ul li:last-child {
-    float: right;
-}
-
-.main ul li a {
+.navbar ul li a {
     text-decoration: none;
     font: 25px/1;
     text-transform: uppercase;
     font-weight: bold;
-    color: coral;
-    background-color: white;
-    padding: 5px 20px;
-    border: 1px solid coral;
+    color: white;
+    background-color: coral;
+    padding: .2rem .5rem;
+    border: 1px solid white;
 }
 
-.main ul li a:hover {
-    background-color: coral;
-    color: white;
+.navbar ul li a:hover {
+    background-color: white;
+    color: coral;
+}
+
+.content {
+    font: 18px/1;
+    background-color: lightgray;
+    text-transform: uppercase;
+    padding: 20px;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    min-height: 80vh;
 }
 
 a {
     text-decoration: none;
-    color: #ccc;
+    color: coral;
     font: 18px/1;
     text-transform: uppercase;
     font-weight: bold;
-    color: coral;
 }
+a:hover {
+    color: white;
+}
+
+p {
+    padding: auto;
+}
+
 
 form {
     margin-top: 5vh;
@@ -96,7 +112,17 @@ input[type="password"] {
 input[type="submit"] {
     margin: .4rem;
     padding: .1rem;
+    background-color: coral;
+    color: white;
+    text-transform: uppercase;
+    font: 12px/1;
+}
+
+input[type="submit"]:hover {
+    margin: .4rem;
+    padding: .1rem;
     background-color: white;
+    color: coral;
     text-transform: uppercase;
     font: 12px/1;
 }
