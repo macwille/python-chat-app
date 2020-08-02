@@ -6,7 +6,9 @@ Flask enviroment based Python web application for running a chat room website wi
 
 ## Website
 
-Website is running on Heroku server [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
+Project will be using [Heroku](https://dashboard.heroku.com/home) for running the website.
+
+When website is running on Heroku server you can find it [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
 
 ## Definition
 
