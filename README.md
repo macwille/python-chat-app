@@ -4,6 +4,10 @@
 
 Flask enviroment based Python web application for running a chat room website with backend database using PostgreSQL.
 
+## Website
+
+Website is running on Heroku server [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
+
 ## Definition
 
 The application can perform following functions when it's finished: 
