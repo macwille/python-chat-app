@@ -4,6 +4,7 @@
 {% block header %}
 <h1>Welcome to Chat404</h1>
 <p> Log in to chat!</p>
+{{ message }}
 {% endblock %}
 
 {% block content %}
@@ -15,6 +16,7 @@ To chat go to <a href="/subject">Rooms</a>
 <a href="/logout">Log out</a>
 
 {% else %}
+
 
 <form action="/login" method="POST">
     <fieldset>
@@ -30,6 +32,7 @@ To chat go to <a href="/subject">Rooms</a>
         </p>
     </fieldset>
 </form>
+
 {% endif %}
 
 {% endblock %}

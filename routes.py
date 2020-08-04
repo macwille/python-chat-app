@@ -16,12 +16,38 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
-    username = request.form["username"]
+    name = request.form["username"]
     password = request.form["password"]
-    session["username"] = username
-    return redirect("/")
+    print("search for:", name)
+    error = "Error"
+
+    try:
+        sql = "SELECT password FROM users WHERE name=:name"
+        result = db.session.execute(sql, {"name": name})
+        res = result.fetchone()
+
+    except:
+        return redirect("/")
+
+    else:
+
+        if res == None:
+            print("no user found")
+            flash(error)
+            return redirect("/")
+
+        else:
+            hash_value = res[0]
+
+            if check_password_hash(hash_value, password):
+                print("correct password")
+                session["username"] = name
+                return redirect("/")
+            else:
+                print("wrong password")
+                return redirect("/")
 
 
 @app.route("/logout")
