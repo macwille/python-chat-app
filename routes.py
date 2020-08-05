@@ -21,21 +21,17 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
     print("search for:", username)
-
     try:
         sql = "SELECT password, id FROM users WHERE username=:username"
         result = db.session.execute(sql, {"username": username})
         res = result.fetchone()
-
     except:
         return redirect("/")
-
     else:
 
         if res == None:
             print("no user found")
             return redirect("/")
-
         else:
             hash_value = res[0]
 
@@ -43,7 +39,7 @@ def login():
                 print("correct password")
                 session["username"] = username
                 session["id"] = res[1]
-                print("session id:",res[1])
+                print("session id:", res[1])
                 return redirect("/")
             else:
                 print("wrong password")
@@ -91,7 +87,6 @@ def subjects():
 def room(id):
     error = "Room not found"
     try:
-        # TODO: JOIN TABLES to get users.name.
 
         sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
         result = db.session.execute(sql, {"id": id})
@@ -105,26 +100,27 @@ def room(id):
         return redirect("/subjects")
     else:
         print("search for messages")
-        #"SELECT content FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE rooms.id=:id AND messages.visible=1"
         sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
         result = db.session.execute(sql1, {"id": id})
         messages = result.fetchall()
-        print(messages)
-        return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
+        if not messages:
+            print("no messages found")
+            return render_template("room.html", id=room_id, name=name,  owner=username)
+        else:
+            return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
 
 
 @app.route("/send", methods=["POST"])
 def send():
-    # TODO: insert into TABEL messages.
     content = request.form["content"]
     room_id = request.form["room_id"]
     user_id = session["id"]
-
-    sql = "INSERT INTO messages (user_id, room_id, content, visible, created_at) VALUES (:user_id, :room_id, :content, 1, NOW())"
-    db.session.execute(sql, {"user_id":user_id, "room_id":room_id, "content":content})
+    sql = "INSERT INTO messages (user_id, room_id, content, visible) VALUES (:user_id, :room_id, :content, 1)"
+    db.session.execute(
+        sql, {"user_id": user_id, "room_id": room_id, "content": content})
     db.session.commit()
 
-    return redirect(request.referrer)
+    return redirect("/subjects")
 
 
 @app.route("/search")
@@ -137,13 +133,3 @@ def search():
 def result():
     query = request.args["query"]
     return render_template("search.html", result=query)
-
-
-@app.route("/test")
-def test():
-    result = db.session.execute("SELECT COUNT(*) FROM messages")
-    count = result.fetchone()[0]
-    result = db.session.execute("SELECT content FROM messages")
-    messages = result.fetchall()
-
-    return render_template("test.html", count=count, messages=messages)

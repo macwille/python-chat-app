@@ -13,18 +13,16 @@
     <fieldset>
         <legend>Messages</legend>
         {% for message in messages %}
-        <p class="message"> {% if message[1] ==  session["username"] %}<input type="submit" value="delete" {% endif %}
-            class="message"><b>{{ message[1] }}@{{ messages[2][2].strftime('%Y-%m-%d') }}: {{ message[0] }}</b>
-            {% endfor %}
+        <p class="message"> <b>{{messages[1][1]}}@{{messages[1][2].strftime('%Y-%m-%d')}}:</b> {{ message[0]}}</p>
+        {% endfor %}
     </fieldset>
 </div>
-<br>
 
 
 <form action="/send" method="POST">
     <p>new message by you, {{ session.username }}:</p>
     <input type="hidden" name="room_id" value="{{ id }}">
-    <textarea name="content" rows="3" cols="40"></textarea>
+    <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea>
     <br>
     <input type="submit" value="Send your important message">
 </form>
