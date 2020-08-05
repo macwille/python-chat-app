@@ -89,21 +89,28 @@ def subjects():
 
 @app.route("/room/id=<int:id>")
 def room(id):
+    error = "Room not found"
     try:
+        # TODO: JOIN TABLES to get users.name.
         sql = "SELECT * FROM rooms WHERE id=:id"
         result = db.session.execute(sql, {"id": id})
-        name = result.fetchone()[1]
+        room = result.fetchone()
+        print(room)
+        id2 = room[0]
+        name = room[1]
+        owner_id = room[2]
 
     except:
         print("Not found")
-        return render_template("room.html", name="ROOM NOT FOUND")
+        return render_template("room.html", name=error)
     else:
-        return render_template("room.html", name=name)
+        return render_template("room.html", name=name, id=id2, owner=owner_id)
 
 
 @app.route("/send", methods=["POST"])
 def send():
-    return redirect("/")
+    # TODO: insert into TABEL messages.
+    return redirect(request.referrer)
 
 
 @app.route("/search")
