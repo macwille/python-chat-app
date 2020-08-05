@@ -13,8 +13,9 @@
     <fieldset>
         <legend>Messages</legend>
         {% for message in messages %}
-        <p class="message"><b>{{ message[1] }}@{{ messages[2][2].strftime('%Y-%m-%d') }}:</b> {{ message[0] }}</p>
-        {% endfor %}
+        <p class="message"> {% if message[1] ==  session["username"] %}<input type="submit" value="delete" {% endif %}
+            class="message"><b>{{ message[1] }}@{{ messages[2][2].strftime('%Y-%m-%d') }}: {{ message[0] }}</b>
+            {% endfor %}
     </fieldset>
 </div>
 <br>
