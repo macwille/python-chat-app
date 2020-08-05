@@ -33,18 +33,13 @@ header {
 }
 
 .navbar ul {
-    max-width: 45em;
-    top: 4vh;
-    padding-top: 1vh;
-    padding-bottom: 1vh;
     margin: auto;
     float: center;
 }
 
 .navbar ul li {
-    max-width: 45em;
     display: inline-block;
-    margin: 10px;
+    margin: 16px 8px;
 }
 
 .navbar ul li:last-child {
@@ -72,9 +67,15 @@ header {
     background-color: #fffcf2;
     text-transform: uppercase;
     padding: 20px;
-    margin-top: 10vh;
-    margin-bottom: 10vh;
+    margin-top: 20px;
+    margin-bottom: 40px;
     min-height: 80vh;
+}
+
+
+.message {
+    padding: 10px;
+    color: #eb5e28;
 }
 
 a {

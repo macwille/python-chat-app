@@ -1,10 +1,10 @@
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
-    name varchar(21) NOT NULL,
+    username varchar(21) NOT NULL,
     password TEXT NOT NULL,
     role INTEGER,
-    CONSTRAINT unique_username UNIQUE(name)
+    CONSTRAINT unique_username UNIQUE(username)
 );
 
 CREATE TABLE messages
@@ -13,23 +13,25 @@ CREATE TABLE messages
     user_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
     content TEXT,
-    created_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    visible INTEGER NOT NULL
 );
 
 CREATE TABLE rooms
 (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    room_name TEXT NOT NULL,
     user_id INTEGER NOT NULL,
-    subject_id INTEGER NOT NULL
+    subject_id INTEGER NOT NULL,
+    visible INTEGER NOT NULL
 );
 
 CREATE TABLE subjects
 (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    subject_name TEXT NOT NULL,
     content TEXT,
-    CONSTRAINT unique_subjectname UNIQUE(name)
+    CONSTRAINT unique_subjectname UNIQUE(subject_name)
 
 );
 

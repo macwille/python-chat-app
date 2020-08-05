@@ -18,14 +18,13 @@ def index():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    name = request.form["username"]
+    username = request.form["username"]
     password = request.form["password"]
-    print("search for:", name)
-    error = "Error"
+    print("search for:", username)
 
     try:
-        sql = "SELECT password FROM users WHERE name=:name"
-        result = db.session.execute(sql, {"name": name})
+        sql = "SELECT password, id FROM users WHERE username=:username"
+        result = db.session.execute(sql, {"username": username})
         res = result.fetchone()
 
     except:
@@ -35,7 +34,6 @@ def login():
 
         if res == None:
             print("no user found")
-            flash(error)
             return redirect("/")
 
         else:
@@ -43,7 +41,9 @@ def login():
 
             if check_password_hash(hash_value, password):
                 print("correct password")
-                session["username"] = name
+                session["username"] = username
+                session["id"] = res[1]
+                print("session id:",res[1])
                 return redirect("/")
             else:
                 print("wrong password")
@@ -71,8 +71,8 @@ def registerNew():
     password = request.form["password"]
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO users (name,password, role) VALUES (:name,:password, 1)"
-        db.session.execute(sql, {"name": username, "password": hash_value})
+        sql = "INSERT INTO users (username,password, role) VALUES (:username,:password, 1)"
+        db.session.execute(sql, {"username": username, "password": hash_value})
         db.session.commit()
     except:
         print("Username already taken")
@@ -82,9 +82,9 @@ def registerNew():
         return redirect("/register")
 
 
-@app.route("/subject")
+@app.route("/subjects")
 def subjects():
-    return render_template("subject.html")
+    return render_template("subjects.html")
 
 
 @app.route("/room/id=<int:id>")
@@ -92,24 +92,38 @@ def room(id):
     error = "Room not found"
     try:
         # TODO: JOIN TABLES to get users.name.
-        sql = "SELECT * FROM rooms WHERE id=:id"
+
+        sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
         result = db.session.execute(sql, {"id": id})
         room = result.fetchone()
         print(room)
-        id2 = room[0]
+        room_id = room[0]
         name = room[1]
-        owner_id = room[2]
+        username = room[2]
 
     except:
-        print("Not found")
-        return render_template("room.html", name=error)
+        return redirect("/subjects")
     else:
-        return render_template("room.html", name=name, id=id2, owner=owner_id)
+        print("search for messages")
+        #"SELECT content FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE rooms.id=:id AND messages.visible=1"
+        sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
+        result = db.session.execute(sql1, {"id": id})
+        messages = result.fetchall()
+        print(messages)
+        return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
 
 
 @app.route("/send", methods=["POST"])
 def send():
     # TODO: insert into TABEL messages.
+    content = request.form["content"]
+    room_id = request.form["room_id"]
+    user_id = session["id"]
+
+    sql = "INSERT INTO messages (user_id, room_id, content, visible, created_at) VALUES (:user_id, :room_id, :content, 1, NOW())"
+    db.session.execute(sql, {"user_id":user_id, "room_id":room_id, "content":content})
+    db.session.commit()
+
     return redirect(request.referrer)
 
 
