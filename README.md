@@ -10,6 +10,8 @@ Project will be using [Heroku](https://dashboard.heroku.com/home) for running th
 
 When website is running on Heroku server you can find it [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
 
+### **Website version may be older than current code!**
+
 ## Definition
 
 The application can perform following functions when it's finished: 
