@@ -4,6 +4,18 @@
 
 Flask enviroment based Python web application for running a chat room website with backend database using PostgreSQL.
 
+## Current Features
+
+* User can register and log in with same account.
+
+* Rooms show messages of that room.
+
+* App has working database.
+
+#### Bugs
+
+* Sending a message not working.
+
 ## Website
 
 Project will be using [Heroku](https://dashboard.heroku.com/home) for running the website.
