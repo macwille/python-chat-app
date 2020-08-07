@@ -1,6 +1,6 @@
 from app import app
 from os import getenv
-from flask import Flask
+from flask import Flask, url_for
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -72,10 +72,10 @@ def registerNew():
         db.session.commit()
     except:
         print("Username already taken")
-        return redirect("/register")
+        return redirect(url_for("register"))
     else:
         session["username"] = username
-        return redirect("/register")
+        return redirect(url_for("register"))
 
 
 @app.route("/subjects")
@@ -97,7 +97,7 @@ def room(id):
         username = room[2]
 
     except:
-        return redirect("/subjects")
+        return redirect(url_for("subjects"))
     else:
         print("search for messages")
         sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
@@ -115,21 +115,24 @@ def send():
     content = request.form["content"]
     room_id = request.form["room_id"]
     user_id = session["id"]
-    sql = "INSERT INTO messages (user_id, room_id, content, visible) VALUES (:user_id, :room_id, :content, 1)"
-    db.session.execute(
-        sql, {"user_id": user_id, "room_id": room_id, "content": content})
-    db.session.commit()
-
-    return redirect("/subjects")
+    try:
+        sql = "INSERT INTO messages (user_id, room_id, content, visible) VALUES (:user_id, :room_id, :content, 1)"
+        db.session.execute(
+            sql, {"user_id": user_id, "room_id": room_id, "content": content})
+        db.session.commit()
+    except:
+        print: "error inserting message to db"
+        return redirect("subjects")
+    else:
+        return redirect(url_for("room", id=room_id))
 
 
 @app.route("/search")
 def search():
-    result = "Time to search"
-    return render_template("search.html", result=result)
+    return render_template("search.html")
 
 
-@app.route("/result")
+@app.route("/result", methods=["GET"])
 def result():
     query = request.args["query"]
     return render_template("search.html", result=query)
