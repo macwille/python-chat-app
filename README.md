@@ -65,6 +65,10 @@ After navigating to the project folder.
 
 ### PostgreSQL
 
-If you have PostgreSQL installed these command work only if you have the default superuser and have a database named chat inside your local cluster.
+If you have PostgreSQL installed you can run these commands.
+
+
+* `DATABASE_URL=postgresql://user:password@localhost:PORT/database` - template for .env configuration.
 
 * `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql).
+
