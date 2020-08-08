@@ -1,4 +1,4 @@
-# Chat app - [Link](https://dashboard.heroku.com/home)
+# Chat app - [Link](https://chat404-web.herokuapp.com)
 
 ### WORK IN PROGRESS
 
