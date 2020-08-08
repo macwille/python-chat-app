@@ -44,9 +44,9 @@ After navigating to the project folder.
 
 ### Linux
 
-* `python3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
+* `python3 -m venv venv` - Creates local python 3 virtual envirnoment folder named 'venv'.
 
-* `source venv/bin/activate` - Activates virtual enviroment.
+* `source venv/bin/activate` - Activates virtual envirnoment.
 
 * **(venv)** `pip install -r requirements.txt` - installs dependecies
 
@@ -54,9 +54,9 @@ After navigating to the project folder.
 
 ### Windows
 
-* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
+* `py -3 -m venv venv` - Creates local python 3 virtual envirnoment folder named 'venv'.
 
-* `venv\Scripts\activate` - Activates virtual enviroment.
+* `venv\Scripts\activate` - Activates virtual envirnoment.
 
 * **(venv)** `pip install -r requirements.txt` - installs dependecies.
 
