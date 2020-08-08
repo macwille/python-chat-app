@@ -74,8 +74,14 @@ def registerNew():
         print("Username already taken")
         return redirect(url_for("register"))
     else:
+        sql = "SELECT id FROM users where username=:username"
+        result = db.session.execute(sql, {"username": username})
+        id = result.fetchone()[0]
+        print(id)
         session["username"] = username
-        return redirect(url_for("register"))
+        session["id"] = id
+
+        return redirect("/")
 
 
 @app.route("/subjects")
@@ -103,6 +109,8 @@ def room(id):
         sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
         result = db.session.execute(sql1, {"id": id})
         messages = result.fetchall()
+
+        print(messages)
         if not messages:
             print("no messages found")
             return render_template("room.html", id=room_id, name=name,  owner=username)
@@ -117,7 +125,7 @@ def send():
     room_id = request.form["room_id"]
     user_id = session["id"]
     try:
-        sql = "INSERT INTO messages (user_id, room_id, content, visible) VALUES (:user_id, :room_id, :content, 1)"
+        sql = "INSERT INTO messages (user_id, room_id, content, created_at, visible) VALUES (:user_id, :room_id, :content, NOW(), 1)"
         db.session.execute(
             sql, {"user_id": user_id, "room_id": room_id, "content": content})
         db.session.commit()
@@ -125,7 +133,7 @@ def send():
         print: "error inserting message to db"
         return redirect("subjects")
     else:
-        return redirect("/subjects")
+        return redirect(url_for("room", id=room_id))
 
 
 @app.route("/search")

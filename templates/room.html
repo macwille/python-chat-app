@@ -15,7 +15,7 @@
         {% if messages is defined %}
 
         {% for message in messages %}
-        <p class="message"> <b>{{messages[0][1]}}@{{messages[0][2].strftime('%Y-%m-%d')}}:</b> {{ message[0]}}</p>
+        <p class="message"> <b>{{message[1]}}@{{message[2].strftime('%d-%m-%y')}}:</b> {{ message[0]}}</p>
 
         {% endfor %}
         {% endif %}
