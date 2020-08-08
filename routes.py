@@ -125,7 +125,7 @@ def send():
         print: "error inserting message to db"
         return redirect("subjects")
     else:
-        return redirect(url_for("room", id=room_id))
+        return redirect(url_for("subjects"))
 
 
 @app.route("/search")

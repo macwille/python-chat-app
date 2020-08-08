@@ -23,14 +23,15 @@
     </fieldset>
 </div>
 
-
-<form action="/send" method="POST">
-    <p>new message by you, {{ session.username }}:</p>
-    <input type="hidden" name="room_id" value="{{ id }}">
-    <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea>
-    <br>
-    <input type="submit" value="Send your important message">
-</form>
+<div>
+    <form action="/send" method="POST">
+        <p>new message by you, {{ session.username }}:</p>
+        <input type="hidden" name="room_id" value="{{ id }}">
+        <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea>
+        <br>
+        <input type="submit" value="Send your important message">
+    </form>
+</div>
 
 {% else %}
 <p> You must be logged in to send messages to this room.</p>
