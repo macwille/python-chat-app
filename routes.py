@@ -100,13 +100,14 @@ def room(id):
         return redirect(url_for("subjects"))
     else:
         print("search for messages")
-        sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id AND messages.visible=1 ORDER BY messages.created_at"
+        sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
         result = db.session.execute(sql1, {"id": id})
         messages = result.fetchall()
         if not messages:
             print("no messages found")
             return render_template("room.html", id=room_id, name=name,  owner=username)
         else:
+            print("messages found")
             return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
 
 
