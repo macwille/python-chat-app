@@ -8,23 +8,19 @@ Flask enviroment based Python web application for running a chat room website wi
 
 * User can register and log in with same account.
 
-* Rooms show messages of that room.
+* User can enter room and type messages.
 
-* App has working database.
-
-#### Bugs
-
-* Sending a message not working.
+* Working Database at Heroku.
 
 ## Website
 
-Project will be using [Heroku](https://dashboard.heroku.com/home) for running the website.
+Project will be using [Heroku](https://dashboard.heroku.com/home).
 
-When website is running on Heroku server you can find it [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
+When website is up and running on Heroku server you can find it [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
 
 ### **Website version may be older than current code!**
 
-## Definition
+## Planned Features
 
 The application can perform following functions when it's finished: 
 
@@ -42,27 +38,33 @@ The application can perform following functions when it's finished:
 
 * Application has support for an admin user with rights to moderate all rooms and users
 
-### Command prompts
-#### Linux
+## Command prompts
 
-* `python3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'. (Inside project folder)
+After navigating to the project folder.
 
-* `source venv/bin/activate` - Activates (venv) from the created venv folder.
+### Linux
 
-* (venv) `pip install -r requirements.txt` installs dependecies dependencies.
+* `python3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
 
-* (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+* `source venv/bin/activate` - Activates virtual enviroment.
 
-* (venv) `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql)
+* **(venv)** `pip install -r requirements.txt` - installs dependecies
 
-#### Windows
+* **(venv)** `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
 
-* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'. (Inside project folder)
+### Windows
 
-* `venv\Scripts\activate` - Activates (venv) from the created venv folder.
+* `py -3 -m venv venv` - Creates local python 3 virtual enviroment folder named 'venv'.
 
-*  (venv) `pip install -r requirements.txt` installs dependecies dependencies.
+* `venv\Scripts\activate` - Activates virtual enviroment.
 
-* (venv) `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+* **(venv)** `pip install -r requirements.txt` - installs dependecies.
 
-* (venv) `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql)
+* **(venv)** `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+
+
+### PostgreSQL
+
+If you have PostgreSQL installed these command work only if you have the default superuser and have a database named chat inside your local cluster.
+
+* `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql).
