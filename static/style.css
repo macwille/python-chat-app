@@ -1,8 +1,9 @@
 body {
-    background-image: linear-gradient(to bottom, #ccc5b9, #252422);
+    background-image: linear-gradient(to bottom, #ccc5b9, #444444);
     background-color: #ccc5b9;
     color: #252422;
     font-family: Helvetica, Verdana, sans-serif;
+    text-transform: uppercase;
     max-width: 45em;
     margin: auto;
 }
@@ -17,24 +18,28 @@ header {
     font-weight: bold;
     padding: 2em 1em;
     font-size: 2em;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
 }
 
 .mainTitle h1 {
+    border-radius: 25px;
     max-width: 45em;
     background-color: #403d39;
     color: #fffcf2;
     text-align: center;
     padding: 10px;
     overflow: hidden;
+    
 }
 
 .navbar {
     background: #403d39;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
 }
 
 .navbar ul {
     margin: auto;
-    float: center;
+
 }
 
 .navbar ul li {
@@ -47,9 +52,9 @@ header {
 }
 
 .navbar ul li a {
+    border-radius: 5px;
     text-decoration: none;
     font: 25px/1;
-    text-transform: uppercase;
     font-weight: bold;
     color: #fffcf2;
     background-color: #eb5e28;
@@ -65,13 +70,16 @@ header {
 .content {
     font: 18px/1;
     background-color: #fffcf2;
-    text-transform: uppercase;
     padding: 20px;
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     min-height: 80vh;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
 }
 
+.pagetitle{
+    margin : auto;
+}
 
 .message {
     padding: 10px;
@@ -82,7 +90,6 @@ a {
     text-decoration: none;
     color: #eb5e28;
     font: 18px/1;
-    text-transform: uppercase;
     font-weight: bold;
 }
 
@@ -118,11 +125,11 @@ input[type="password"] {
 }
 
 input[type="submit"] {
+    border-radius: 3px;
     margin: .4rem;
     padding: .1rem;
     background-color: #eb5e28;
     color: white;
-    text-transform: uppercase;
     font: 12px/1;
 }
 
@@ -131,7 +138,6 @@ input[type="submit"]:hover {
     padding: .1rem;
     background-color: white;
     color: #eb5e28;
-    text-transform: uppercase;
     font: 12px/1;
 }
 
@@ -159,5 +165,9 @@ hr {
 }
 
 .endtext p {
+    text-transform: none;
     color: #eb5e28;
+}
+.endtext a {
+    text-transform: uppercase;
 }

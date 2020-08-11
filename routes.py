@@ -1,7 +1,6 @@
 from app import app
 from os import getenv
-from flask import Flask, url_for
-from flask import redirect, render_template, request, session
+from flask import Flask, url_for, flash, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -36,10 +35,11 @@ def login():
             hash_value = res[0]
 
             if check_password_hash(hash_value, password):
-                print("correct password")
                 session["username"] = username
                 session["id"] = res[1]
+                print("session username", res[0])
                 print("session id:", res[1])
+                flash("Welcome back!", "message")
                 return redirect("/")
             else:
                 print("wrong password")
@@ -48,12 +48,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    try:
-        del session["username"]
-    except:
-        return redirect("/")
-    else:
-        return redirect("/")
+    session.pop("username", None)
+    session.pop("id", None)
+    return redirect("/")
 
 
 @app.route("/register")
@@ -72,6 +69,7 @@ def registerNew():
         db.session.commit()
     except:
         print("Username already taken")
+        flash("Username already taken", "error")
         return redirect(url_for("register"))
     else:
         sql = "SELECT id FROM users where username=:username"
@@ -80,6 +78,7 @@ def registerNew():
         print(id)
         session["username"] = username
         session["id"] = id
+        flash("Registration successful", "message")
 
         return redirect("/")
 
