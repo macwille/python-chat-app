@@ -85,12 +85,20 @@ def registerNew():
 
 @app.route("/subjects")
 def subjects():
-    return render_template("subjects.html")
+    try:
+        sql = "SELECT id, subject_name FROM subjects"
+        result = db.session.execute(sql)
+        subjects = result.fetchall()
+    except:
+        print("Error getting subjects from DB")
+        return render_template("subjects.html")
+    else:
+        print("subjects.html with subjects from DB")
+        return render_template("subjects.html", subjects=subjects)
 
 
 @app.route("/room/id=<int:id>")
 def room(id):
-    error = "Room not found"
     try:
 
         sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
@@ -109,13 +117,31 @@ def room(id):
         result = db.session.execute(sql1, {"id": id})
         messages = result.fetchall()
 
-        print(messages)
         if not messages:
             print("no messages found")
             return render_template("room.html", id=room_id, name=name,  owner=username)
         else:
             print("messages found")
             return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
+
+
+@app.route("/subject/id=<int:id>")
+def subject(id):
+    try:
+        sql = "SELECT * FROM subjects WHERE id=:id"
+        result = db.session.execute(sql, {"id": id})
+        subject = result.fetchone()
+        subject_id = subject[0]
+        subject_name = subject[1]
+        content = subject[2]
+    except:
+        print("error getting data from DB")
+        return redirect(url_for("subjects"))
+    else:
+        sql1 = "SELECT id, room_name FROM rooms WHERE subject_id=:id"
+        result = db.session.execute(sql1, {"id": id})
+        rooms = result.fetchall()
+        return render_template("subject.html", subject_name=subject_name, rooms=rooms, id=subject_id, content=content)
 
 
 @app.route("/send", methods=["POST"])

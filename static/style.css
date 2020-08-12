@@ -29,7 +29,6 @@ header {
     text-align: center;
     padding: 10px;
     overflow: hidden;
-    
 }
 
 .navbar {
@@ -39,7 +38,6 @@ header {
 
 .navbar ul {
     margin: auto;
-
 }
 
 .navbar ul li {
@@ -77,8 +75,8 @@ header {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
 }
 
-.pagetitle{
-    margin : auto;
+.pagetitle {
+    margin: auto;
 }
 
 .message {
@@ -168,6 +166,7 @@ hr {
     text-transform: none;
     color: #eb5e28;
 }
+
 .endtext a {
     text-transform: uppercase;
 }

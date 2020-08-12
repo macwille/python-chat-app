@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Rooms{% endblock %}
+{% block title %} Rooms {% endblock %}
 
 {% block header %}
 <h1> Subjects </h1>
@@ -9,12 +9,14 @@
 {% block content%}
 
 {% if session.username %}
-<p> Logged in as '{{ session.username }}'' </p>
 <div>
-    <h3>General:</h3>
+    {% if subjects is defined %}
     <ul>
-        <li> <a href="/room/id=1">Test Room</a></li>
+        {% for subject in subjects %}
+        <li><a href="{{ url_for('subject', id=subject[0]) }}">{{ subject[1] }}</a></li>
+        {% endfor %}
     </ul>
+    {% endif %}
 </div>
 
 {% else %}

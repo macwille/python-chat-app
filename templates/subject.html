@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>{% block title %} {{ subject_name }} {% endblock %} </h1>
+<p> {{ content }} </p>
+{% endblock %}
+
+{% block content%}
+
+{% if session.username %}
+
+<div>
+    <fieldset>
+        <legend>Rooms</legend>
+        {% if rooms is defined %}
+        <ul>
+            {% for room in rooms %}
+            <li><a href="{{ url_for('room', id=room[0]) }}">{{ room[1] }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </fieldset>
+</div>
+
+<div>
+    <form action="/send" method="POST">
+        <input type="hidden" name="subject_id" value="{{ id }}">
+        <input type="submit" value="Create a Room">
+    </form>
+</div>
+
+{% else %}
+<p> Log in to view the rooms</p>
+<br>
+<a href="/">Log in</a>
+<br>
+or
+<br>
+<a href="/register.html">Register</a>
+
+{% endif %}
+
+{% endblock %}
