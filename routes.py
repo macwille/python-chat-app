@@ -87,7 +87,7 @@ def registerNew():
 @app.route("/subjects")
 def subjects():
     try:
-        sql = "SELECT id, subject_name FROM subjects"
+        sql = "SELECT id, subject_name, require_permission FROM subjects"
         result = db.session.execute(sql)
         subjects = result.fetchall()
     except:
@@ -134,7 +134,9 @@ def subject(id):
         subject = result.fetchone()
         subject_id = subject[0]
         subject_name = subject[1]
-        content = subject[2]
+        secret = subject[2]
+        content = subject[3]
+
     except:
         print("error getting data from DB")
         return redirect(url_for("subjects"))

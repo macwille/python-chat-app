@@ -13,6 +13,18 @@ header {
     background-size: auto;
 }
 
+.flash ul {
+    display: inline-block;
+    list-style-type: none;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #eb5e28;
+}
+
+.flash ul li {
+    color: white;
+}
+
 .mainTitle {
     background-image: linear-gradient(to bottom, #eb5e28, #eb5e28);
     font-weight: bold;
@@ -92,7 +104,7 @@ a {
 }
 
 a:hover {
-    color: white;
+    color: coral;
 }
 
 p {
@@ -123,17 +135,16 @@ input[type="password"] {
 }
 
 input[type="submit"] {
+    text-transform: uppercase;
     border-radius: 3px;
-    margin: .4rem;
-    padding: .1rem;
     background-color: #eb5e28;
     color: white;
     font: 12px/1;
 }
 
 input[type="submit"]:hover {
-    margin: .4rem;
-    padding: .1rem;
+    text-transform: uppercase;
+    border-radius: 3px;
     background-color: white;
     color: #eb5e28;
     font: 12px/1;

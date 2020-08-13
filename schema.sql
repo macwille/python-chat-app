@@ -10,6 +10,7 @@ CREATE TABLE subjects
 (
     id SERIAL PRIMARY KEY,
     subject_name TEXT NOT NULL,
+    require_permission INTEGER,
     content TEXT,
     CONSTRAINT unique_subjectname UNIQUE(subject_name)
 
