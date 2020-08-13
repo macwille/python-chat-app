@@ -30,6 +30,7 @@ def login():
 
         if res == None:
             print("no user found")
+            flash("User name or password incorrect", "message")
             return redirect("/")
         else:
             hash_value = res[0]
@@ -43,6 +44,7 @@ def login():
                 return redirect("/")
             else:
                 print("wrong password")
+                flash("User name or password incorrect", "message")
                 return redirect("/")
 
 
@@ -173,17 +175,15 @@ def search():
 def result():
     try:
         query = request.args["query"]
-        print("Searching for", query.strip())
         sql = "SELECT username, room_name, content FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query"
-        result = db.session.execute(sql, {"query": "%"+query+"%"})
-        results = result.fetchall()
+        sql_query = db.session.execute(sql, {"query": "%"+query+"%"})
+        results = sql_query.fetchall()
     except:
-        print("error connecting to DB")
         return redirect(url_for("search"))
     else:
         if not results:
-            print("no results found")
-            return render_template(url_for("search", query=query))
+            flash("No results", "message")
+            return redirect(url_for("search"))
         else:
             print(results)
             return render_template("search.html", results=results, query=query)

@@ -36,8 +36,6 @@ The application can perform following functions when it's finished:
 
 * User can edit or delete his or her messages
 
-* User can search for messages
-
 * Users can create private subject areas
 
 * Application has support for an admin user with rights to moderate all rooms and users
