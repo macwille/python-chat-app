@@ -12,9 +12,11 @@ Flask enviroment based Python web application for running a chat room website wi
 
 * App has a working database
 
-* Search messages function
+* Can search messages
 
-* Subjects and rooms from database
+* Rooms sorted by subjects
+
+* Flash messages support
 
 ## Website
 
@@ -28,17 +30,13 @@ When website is up and running on Heroku server you can find it [here](https://c
 
 The application can perform following functions when it's finished: 
 
-* Has chat rooms where registered users can leave messages
-
-* Rooms are divided to subject areas and some areas can be limited to certain users
-
-* User can create an unique username
-
 * User can edit or delete his or her messages
 
-* Users can create private subject areas
+* Restricted rooms checked
 
-* Application has support for an admin user with rights to moderate all rooms and users
+* User can create rooms
+
+* Admin user
 
 ## Command prompts
 
