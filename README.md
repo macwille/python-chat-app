@@ -74,5 +74,7 @@ If you have PostgreSQL installed you can run these commands.
 
 * `DATABASE_URL=postgresql://user:password@localhost:PORT/database` - template for .env configuration.
 
-* `psql -U postgres -d chat < schema.sql` Creates SQL-tables from [schema](https://github.com/Viltska/python-chat-app/blob/master/schema.sql).
+* `psql -U user/superuser -d database < schema.sql` Creates SQL-tables.
+
+* `psql -U user/superuser -d database < drop.sql` Deletes all SQL-tables.
 
