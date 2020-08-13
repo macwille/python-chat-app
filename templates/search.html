@@ -6,27 +6,34 @@
 
 {% block content%}
 
-
 {% if session.username %}
 
+{% if query is defined %}
+<h4> found {{ results|length }} matches for '{{ query }}'</h4>
+
+{% else %}
+<h4>Type in text and search</h4>
+{% endif %}
 
 <div>
-    <h4>results:</h4>
-    <p> {{result}}</p>
+    {% if results is defined %}
+    <ul>
+        {% for result in results %}
+        <li>{{ result[0] }}@{{ result[1]}}: '{{ result[2] }}'</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
+<br>
 
-
-<form action="/search" method="GET">
-    <fieldset>
-        <legend>Search &#128269</legend>
-        <p>
-            <textarea name="content" rows="3" cols="40"></textarea>
-        </p>
-        <input type="submit" value="Send">
-    </fieldset>
+<form action="/result" method="GET">
+    <textarea name="query" rows="3" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Search">
 </form>
 
 {% else %}
+
 <p> You must be logged in to use the search function</p>
 <br>
 <a href="/">Log in</a>

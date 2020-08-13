@@ -10,7 +10,11 @@ Flask enviroment based Python web application for running a chat room website wi
 
 * User can enter room and type messages.
 
-* Working Database at Heroku.
+* App has a working database
+
+* Search messages function
+
+* Subjects and rooms from database
 
 ## Website
 

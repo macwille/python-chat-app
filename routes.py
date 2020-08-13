@@ -50,6 +50,7 @@ def login():
 def logout():
     session.pop("username", None)
     session.pop("id", None)
+    flash("You've been logged out", "message")
     return redirect("/")
 
 
@@ -152,7 +153,7 @@ def send():
     try:
         sql = "INSERT INTO messages (user_id, room_id, content, created_at, visible) VALUES (:user_id, :room_id, :content, NOW(), 1)"
         db.session.execute(
-            sql, {"user_id": user_id, "room_id": room_id, "content": content})
+            sql, {"user_id": user_id, "room_id": room_id, "content": content.strip()})
         db.session.commit()
     except:
         print: "error inserting message to db"
@@ -168,5 +169,19 @@ def search():
 
 @app.route("/result", methods=["GET"])
 def result():
-    query = request.args["query"]
-    return render_template("search.html", result=query)
+    try:
+        query = request.args["query"]
+        print("Searching for", query.strip())
+        sql = "SELECT username, room_name, content FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query"
+        result = db.session.execute(sql, {"query": "%"+query+"%"})
+        results = result.fetchall()
+    except:
+        print("error connecting to DB")
+        return redirect(url_for("search"))
+    else:
+        if not results:
+            print("no results found")
+            return render_template(url_for("search", query=query))
+        else:
+            print(results)
+            return render_template("search.html", results=results, query=query)
