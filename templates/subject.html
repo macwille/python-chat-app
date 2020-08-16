@@ -23,10 +23,7 @@
 </div>
 
 <div>
-    <form action="/send" method="POST">
-        <input type="hidden" name="subject_id" value="{{ id }}">
-        <input type="submit" value="Create a Room">
-    </form>
+    <p>Create a new room <a href="/create/id={{ id }}">here</a></p>
 </div>
 
 {% else %}
@@ -36,7 +33,7 @@
 <br>
 or
 <br>
-<a href="/register.html">Register</a>
+<a href="/register">Register</a>
 
 {% endif %}
 

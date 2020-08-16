@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %} Create a Room {% endblock %}
+
+{% block header %}
+<h1>Create a Room</h1>
+{% endblock %}
+
+{% block content %}
+{% if session.username %}
+<form action="/createRoom" method="POST">
+    <fieldset>
+        <legend>Create a Room</legend>
+        <p>Room Name:<br>
+            <input type="text" name="room_name" maxlength="20" required></p>
+        <p>Description:<br>
+            <input type="text" name="content" maxlength="30" required></p>
+        <input type="hidden" name="subject_id" value="{{ id }}">
+        <input type="submit" value="Create">
+    </fieldset>
+</form>
+
+{% else %}
+<p> Log in to view the rooms</p>
+<br>
+<a href="/">Log in</a>
+<br>
+or
+<br>
+<a href="/register">Register</a>
+
+{% endif %}
+
+{% endblock %}

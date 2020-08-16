@@ -86,6 +86,34 @@ def registerNew():
         return redirect("/")
 
 
+@app.route("/create/id=<int:id>")
+def create(id):
+    return render_template("create.html", id=id)
+
+
+@app.route("/createRoom", methods=["POST", "GET"])
+def createRoom():
+    user_id = session["id"]
+    room_name = request.form["room_name"]
+    content = request.form["content"]
+    subject_id = request.form["subject_id"]
+
+    # todo check user rights to this subject
+
+    try:
+        sql = "INSERT INTO rooms (room_name, user_id, subject_id, visible) values(:room_name, :user_id, :subject_id, 1)"
+        db.session.execute(
+            sql, {"room_name": room_name, "user_id": user_id, "subject_id": subject_id})
+        db.session.commit()
+    except:
+        print("Error adding room")
+        flash("Problem creating room", "error")
+        return redirect(url_for("subject", id=subject_id))
+    else:
+        flash("Room created", "message")
+        return redirect(url_for("subject", id=subject_id))
+
+
 @app.route("/subjects")
 def subjects():
     try:
