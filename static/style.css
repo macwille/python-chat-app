@@ -50,6 +50,8 @@ header {
 
 .navbar ul {
     margin: auto;
+    padding-inline-end: 10px;
+    padding-inline-start: 10px;
 }
 
 .navbar ul li {
@@ -79,6 +81,7 @@ header {
 
 .content {
     font: 18px/1;
+    position: relative;
     background-color: #fffcf2;
     padding: 20px;
     margin-top: 20px;
@@ -92,8 +95,15 @@ header {
 }
 
 .message {
-    padding: 10px;
+    font-size: 16px;
     color: #252422;
+    padding: 10px;
+    text-transform: none;
+}
+
+.message b {
+    text-transform: uppercase;
+    color: #eb5e28;
 }
 
 a {

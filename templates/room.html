@@ -2,7 +2,8 @@
 
 {% block header %}
 <h1>{% block title %} {{ name }} {% endblock %} </h1>
-<p>Room owner: <b>{{ owner }}</b></p>
+<p>{{ content }}</p>
+<p>Owner: <b>{{ owner }}</b></p>
 {% endblock %}
 
 {% block content%}
@@ -15,7 +16,7 @@
         {% if messages is defined %}
 
         {% for message in messages %}
-        <p class="message"> <b>{{message[1]}}@{{message[2].strftime('%d-%m-%y')}}:</b> {{ message[0]}}</p>
+        <p class="message"><b>{{message[1]}} ({{message[2].strftime('%d-%m-%y')}}): </b>{{ message[0]}}</p>
 
         {% endfor %}
         {% endif %}
@@ -27,9 +28,8 @@
     <form action="/send" method="POST">
         <p>new message by you, {{ session.username }}:</p>
         <input type="hidden" name="room_id" value="{{ id }}">
-        <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea>
-        <br>
-        <input type="submit" value="Send your important message">
+        <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea><br>
+        <input type="submit" value="Send">
     </form>
 </div>
 
@@ -40,7 +40,7 @@
 <br>
 or
 <br>
-<a href="/register.html">Register</a>
+<a href="/register">Register</a>
 
 {% endif %}
 

@@ -95,7 +95,6 @@ def create(id):
 def createRoom():
     user_id = session["id"]
     room_name = request.form["room_name"]
-    content = request.form["content"]
     subject_id = request.form["subject_id"]
 
     # todo check user rights to this subject
@@ -141,6 +140,7 @@ def room(id):
         username = room[2]
 
     except:
+        flash("Problem loading the room", "error")
         return redirect(url_for("subjects"))
     else:
         print("search for messages")
