@@ -1,56 +1,42 @@
-# Chat app - [Website](https://chat404-web.herokuapp.com)
+# Chat app - [Demo](https://chat404-web.herokuapp.com)
 
-### WORK IN PROGRESS
+Python website using Flask framework and PostgreSQL.
 
-Flask enviroment based Python web application for running a chat room website with backend database using PostgreSQL.
+Web-based chat room application where users can register and chat inside different subjects and rooms.
 
 ## Current Features
 
+* Database support
+
 * User can register and log in with same account.
 
-* User can enter room and type messages.
+* User can send messages
 
-* App has a working database
+* User can search for messages
 
-* Can search messages
-
-* Rooms sorted by subjects
-
-* Flash messages support
-
-## Website
-
-Project will be using [Heroku](https://dashboard.heroku.com/home).
-
-When website is up and running on Heroku server you can find it [here](https://chat404-web.herokuapp.com/), it may take some time loading for the first time.
-
-### **Website version may be older than current code!**
+* Can create rooms
 
 ## Planned Features
 
-The application can perform following functions when it's finished: 
-
 * User can edit or delete his or her messages
 
-* Restricted rooms checked
-
-* User can create rooms
+* User can create resricted subjects
 
 * Admin user
 
 ## Command prompts
 
-After navigating to the project folder.
+After navigating to the project folder, first steps when loading is to set up virtual enviroment to hold the project and loading dependencies.
 
 ### Linux
 
-* `python3 -m venv venv` - Creates local python 3 virtual envirnoment folder named 'venv'.
+* `python3 -m venv venv` - Creates a local  virtual envirnoment for the project with a name 'venv'.
 
-* `source venv/bin/activate` - Activates virtual envirnoment.
+* `source venv/bin/activate` - Activates the virtual envirnoment.
 
-* **(venv)** `pip install -r requirements.txt` - installs dependecies
+* **(venv)** `pip install -r requirements.txt` - Checks and downloads the project dependencies.
 
-* **(venv)** `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
+* **(venv)** `flask run` - Runs the program on port `localhost:5000`.
 
 ### Windows
 
