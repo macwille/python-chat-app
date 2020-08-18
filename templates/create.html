@@ -1,21 +1,52 @@
 {% extends "base.html" %}
-{% block title %} Create a Room {% endblock %}
+{% block title %} Create {% endblock %}
 
 {% block header %}
-<h1>Create a Room</h1>
+<h1>Create</h1>
 {% endblock %}
 
 {% block content %}
+
 {% if session.username %}
+
+{% if id > 0 %}
+
+<h2>Room</h2>
 <form action="/createRoom" method="POST">
     <fieldset>
-        <legend>Create a Room</legend>
+        <legend>New Room</legend>
         <p>Room Name:<br>
             <input type="text" name="room_name" maxlength="20" required></p>
         <input type="hidden" name="subject_id" value="{{ id }}">
         <input type="submit" value="Create">
     </fieldset>
 </form>
+
+{% else %}
+
+<h2>Subject</h2>
+<form action="/createSubject" method="POST">
+    <fieldset>
+        <legend>New Subject</legend>
+        <p>Subject Name:<br>
+            <input type="text" name="subject_name" maxlength="20" required></p>
+        <p>Subject Description:<br>
+            <input type="text" name="content" maxlength="20" required></p>
+        <p>Subject password:<br>
+            <input type="password" name="password" maxlength="40" required></p>
+        <p>Requires Password:<br>
+            <label>
+                <input type="radio" id="require_yes" name="require" value="1" required>
+                Yes
+            </label>
+            <label>
+                <input type="radio" id="require_no" name="require" value="0">
+                No
+            </label></p>
+        <input type="submit" value="Create">
+    </fieldset>
+</form>
+{% endif %}
 
 {% else %}
 <p> Log in to view the rooms</p>

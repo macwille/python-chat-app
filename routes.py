@@ -3,6 +3,7 @@ from os import getenv
 from flask import Flask, url_for, flash, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
+import users
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -19,39 +20,17 @@ def index():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    print("search for:", username)
-    try:
-        sql = "SELECT password, id FROM users WHERE username=:username"
-        result = db.session.execute(sql, {"username": username})
-        res = result.fetchone()
-    except:
+    if users.login(username, password, db):
+        flash("Welcome back", "message")
         return redirect("/")
     else:
-
-        if res == None:
-            print("no user found")
-            flash("User name or password incorrect", "message")
-            return redirect("/")
-        else:
-            hash_value = res[0]
-
-            if check_password_hash(hash_value, password):
-                session["username"] = username
-                session["id"] = res[1]
-                print("session username", res[0])
-                print("session id:", res[1])
-                flash("Welcome back!", "message")
-                return redirect("/")
-            else:
-                print("wrong password")
-                flash("User name or password incorrect", "message")
-                return redirect("/")
+        flash("Error logging in", "error")
+        return redirect("/")
 
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
-    session.pop("id", None)
+    users.logout()
     flash("You've been logged out", "message")
     return redirect("/")
 
@@ -65,25 +44,12 @@ def register():
 def registerNew():
     username = request.form["username"]
     password = request.form["password"]
-    hash_value = generate_password_hash(password)
-    try:
-        sql = "INSERT INTO users (username,password, role) VALUES (:username,:password, 1)"
-        db.session.execute(sql, {"username": username, "password": hash_value})
-        db.session.commit()
-    except:
-        print("Username already taken")
-        flash("Username already taken", "error")
-        return redirect(url_for("register"))
-    else:
-        sql = "SELECT id FROM users where username=:username"
-        result = db.session.execute(sql, {"username": username})
-        id = result.fetchone()[0]
-        print(id)
-        session["username"] = username
-        session["id"] = id
-        flash("Registration successful", "message")
-
+    if users.register(username, password, db):
+        flash("Registration Successful", "message")
         return redirect("/")
+    else:
+        flash("Registration Failed", "message")
+        return redirect(url_for("register"))
 
 
 @app.route("/create/id=<int:id>")
@@ -97,7 +63,7 @@ def createRoom():
     room_name = request.form["room_name"]
     subject_id = request.form["subject_id"]
 
-    # todo check user rights to this subject
+    # TODO check user rights to subject
 
     try:
         sql = "INSERT INTO rooms (room_name, user_id, subject_id, visible) values(:room_name, :user_id, :subject_id, 1)"
@@ -113,6 +79,30 @@ def createRoom():
         return redirect(url_for("subject", id=subject_id))
 
 
+@app.route("/createSubject", methods=["POST", "GET"])
+def createSubject():
+    user_id = session["id"]
+    subject_name = request.form["subject_name"]
+    password = request.form["password"]
+    content = request.form["content"]
+    require = request.form["require"]
+    hash_value = generate_password_hash(password)
+    print(require)
+
+    try:
+        sql = "INSERT INTO subjects (subject_name, password, content, require_permission) values (:subject_name, :password, :content, :require_permission)"
+        db.session.execute(
+            sql, {"subject_name": subject_name, "password": hash_value, "content": content, "require_permission": require})
+        db.session.commit()
+        # TODO add rights to subject
+    except:
+        flash("Error creating subject", "error")
+        return redirect(url_for("subjects"))
+    else:
+        flash("Subject created", "message")
+        return redirect(url_for("subjects"))
+
+
 @app.route("/subjects")
 def subjects():
     try:
@@ -121,16 +111,15 @@ def subjects():
         subjects = result.fetchall()
     except:
         print("Error getting subjects from DB")
+        flash("Error getting subjects from database", "error")
         return render_template("subjects.html")
     else:
-        print("subjects.html with subjects from DB")
         return render_template("subjects.html", subjects=subjects)
 
 
 @app.route("/room/id=<int:id>")
 def room(id):
     try:
-
         sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
         result = db.session.execute(sql, {"id": id})
         room = result.fetchone()
