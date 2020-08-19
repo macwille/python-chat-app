@@ -2,7 +2,7 @@
 
 ## Demo
 
-**try out as admin user: `Admin` password: `1234` or register**
+**try out as an admin user - username: `Admin` password: `1234` or register**
 
 Python website using Flask framework and PostgreSQL.
 
@@ -20,13 +20,19 @@ Web-based chat room application where users can register and chat inside differe
 
 * Can create rooms
 
-## Planned Features
-
-* User can edit or delete his or her messages
+* User can delete his/her messages
 
 * User can create resricted subjects
 
 * Admin user
+
+## Possible future ideas
+
+* Can edit messages, rooms and subjects
+
+* User can edit his/her info
+
+* Better stylesheet
 
 ## Command prompts
 
