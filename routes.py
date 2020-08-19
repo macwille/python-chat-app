@@ -3,8 +3,9 @@ from os import getenv
 from flask import Flask, url_for, flash, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
-import users
-import rooms
+import usersService
+import roomsService
+import subjectsService
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -21,7 +22,7 @@ def index():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    if users.login(username, password, db):
+    if usersService.login(username, password, db):
         flash("Welcome back", "message")
         return redirect("/")
     else:
@@ -31,7 +32,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    users.logout()
+    usersService.logout()
     flash("You've been logged out", "message")
     return redirect("/")
 
@@ -45,7 +46,7 @@ def register():
 def registerNew():
     username = request.form["username"]
     password = request.form["password"]
-    if users.register(username, password, db):
+    if usersService.register(username, password, db):
         flash("Registration Successful", "message")
         return redirect("/")
     else:
@@ -64,7 +65,7 @@ def createRoom():
     room_name = request.form["room_name"]
     subject_id = request.form["subject_id"]
 
-    if rooms.createRoom(user_id, room_name, subject_id, db):
+    if roomsService.createRoom(user_id, room_name, subject_id, db):
         flash("Room created", "message")
         return redirect(url_for("subject", id=subject_id))
 
@@ -75,8 +76,7 @@ def createRoom():
 
 @app.route("/deleteRoom/id=<int:id>")
 def deleteRoom(id):
-    print("Delete room called")
-    if rooms.deleteRoom(id, db):
+    if roomsService.deleteRoom(id, db):
         flash("Room deleted", "message")
         return redirect(url_for("subjects"))
     else:
@@ -91,45 +91,32 @@ def createSubject():
     password = request.form["password"]
     content = request.form["content"]
     require = request.form["require"]
-    hash_value = generate_password_hash(password)
-    print(require)
 
-    try:
-        sql = "INSERT INTO subjects (subject_name, password, content, require_permission) values (:subject_name, :password, :content, :require_permission)"
-        db.session.execute(
-            sql, {"subject_name": subject_name, "password": hash_value, "content": content, "require_permission": require})
-        db.session.commit()
-        # TODO add rights to subject
-    except:
-        flash("Error creating subject", "error")
+    if subjectsService.createSubject(user_id, subject_name, password, content, require, db):
+        flash("Subject created", "message")
         return redirect(url_for("subjects"))
     else:
-        flash("Subject created", "message")
+        flash("Error creating subject", "error")
         return redirect(url_for("subjects"))
 
 
 @app.route("/subjects")
 def subjects():
-    try:
-        sql = "SELECT id, subject_name, require_permission FROM subjects"
-        result = db.session.execute(sql)
-        subjects = result.fetchall()
-    except:
-        print("Error getting subjects from DB")
-        flash("Error getting subjects from database", "error")
-        return render_template("subjects.html")
+    subjectsData = subjectsService.getSubjects(db)
+    if subjectsData is not None:
+        return render_template("subjects.html", subjects=subjectsData)
     else:
-        return render_template("subjects.html", subjects=subjects)
+        return render_template("subjects.html")
 
 
 @app.route("/room/id=<int:id>")
 def room(id):
-    roomData = rooms.getRoom(id, db)
+    roomData = roomsService.getRoom(id, db)
     if roomData is not None:
         room_id = roomData[0]
         name = roomData[1]
         username = roomData[2]
-        messages = rooms.getMessages(room_id, db)
+        messages = roomsService.getMessages(room_id, db)
         if messages is not None:
             return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
         else:
@@ -141,30 +128,39 @@ def room(id):
 
 @app.route("/subject/id=<int:id>")
 def subject(id):
-    # TODO check user rights
-    try:
-        sql = "SELECT * FROM subjects WHERE id=:id"
-        result = db.session.execute(sql, {"id": id})
-        subject = result.fetchone()
-        subject_id = subject[0]
-        subject_name = subject[1]
-        secret = subject[2]
-        content = subject[3]
+    subjectData = subjectsService.getSubject(id, db)
+    if subjectData is not None:
+        subject_id = subjectData[0]
+        subject_name = subjectData[1]
+        secret = subjectData[2]
+        content = subjectData[3]
+        require = subjectData[4]
+        roomsData = subjectsService.getRooms(subject_id, db)
+        hasRight = subjectsService.hasRights(session["id"], subject_id, db)
 
-    except:
-        print("error getting data from DB")
-        return redirect(url_for("subjects"))
-    else:
-        sql1 = "SELECT id, room_name FROM rooms WHERE subject_id=:id AND visible=1"
-        result = db.session.execute(sql1, {"id": id})
-        rooms = result.fetchall()
-        if not rooms:
-            return render_template("subject.html", subject_name=subject_name, id=subject_id, content=content)
+        if roomsData is not None:
+            return render_template("subject.html", subject_name=subject_name, rooms=roomsData, id=subject_id, content=content, require=require, hasRight=hasRight)
         else:
-            return render_template("subject.html", subject_name=subject_name, rooms=rooms, id=subject_id, content=content)
+            return render_template("subject.html", subject_name=subject_name, id=subject_id, content=content, require=require, hasRight=hasRight)
+    else:
+        return redirect(url_for("subjects"))
 
 
-@app.route("/send", methods=["POST"])
+@app.route("/subjectLogin", methods=["POST"])
+def subjectLogin():
+    subject_id = request.form["id"]
+    password = request.form["password"]
+
+    if subjectsService.checkPassword(subject_id, password, db):
+        subjectsService.setRightsById(session["id"], subject_id, db)
+        flash("Access granted", "message")
+        return redirect(url_for("subject", id=subject_id))
+    else:
+        flash("Access denied", "error")
+        return redirect(url_for("subject", id=subject_id))
+
+
+@ app.route("/send", methods=["POST"])
 def send():
     content = request.form["content"]
     room_id = request.form["room_id"]
@@ -172,7 +168,7 @@ def send():
 
     lengths = [len(x) for x in content.split()]
     if any(l > 30 for l in lengths):
-        flash("Dont' spam", "message")
+        flash("Don't spam", "message")
         return redirect(url_for("room", id=room_id))
 
     else:
@@ -182,21 +178,19 @@ def send():
                 sql, {"user_id": user_id, "room_id": room_id, "content": content.strip()})
             db.session.commit()
         except:
-            print: "error inserting message to db"
             return redirect("subjects")
         else:
             return redirect(url_for("room", id=room_id))
 
 
-@app.route("/search")
+@ app.route("/search")
 def search():
     return render_template("search.html")
 
 
-@app.route("/setVisible/id=<int:id>", methods=["GET"])
+@ app.route("/setVisible/id=<int:id>", methods=["GET"])
 def setVisible(id):
     user_id = session["id"]
-    print(session["admin"])
     try:
         if session["admin"]:
             sql = "UPDATE messages SET visible = 0 WHERE id = :id"
@@ -214,7 +208,7 @@ def setVisible(id):
         return redirect(url_for("subjects"))
 
 
-@app.route("/result", methods=["GET"])
+@ app.route("/result", methods=["GET"])
 def result():
     try:
         query = request.args["query"]
@@ -228,5 +222,4 @@ def result():
             flash("No results", "message")
             return redirect(url_for("search"))
         else:
-            print(results)
             return render_template("search.html", results=results, query=query)

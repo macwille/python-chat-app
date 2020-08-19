@@ -3,15 +3,32 @@
 {% block header %}
 
 <h1>{% block title %} {{ subject_name }} {% endblock %} </h1>
-<p>'{{ content }}'</p>
+<p>Description: '{{ content }}'</p>
 {% endblock %}
 
 {% block content%}
 
 {% if session.username %}
 
+
+{% if require == 1 and hasRight != True and session.admin != True %}
+
 <div>
-    {% if rooms is defined %}
+    <h2>This area is restricted by a password</h2>
+    <form action="/subjectLogin" method="POST">
+        <fieldset>
+            <legend>{{ subject_name }} Login</legend>
+            <input type="hidden" name="id" value="{{ id }}">
+            <p>Password:<br>
+                <input type="password" name="password" required></p>
+            <input type="submit" value="Log in">
+        </fieldset>
+    </form>
+</div>
+
+{% else %}
+<div>
+    {% if rooms is defined and rooms|length > 0 %}
     <fieldset>
         <legend>Rooms</legend>
         <ul>
@@ -20,18 +37,17 @@
             <br>
             {% endfor %}
         </ul>
-
     </fieldset>
-    {% else%}
-
-    <p>Subject has no rooms yet</p>
-
+    {% else %}
+    <p>This subject doesn't have any rooms yet</p>
     {% endif %}
 </div>
 
 <div>
     <p>Create a new room <a href="/create/id={{ id }}">here</a></p>
 </div>
+
+{% endif%}
 
 {% else %}
 <p> Log in to view the rooms</p>
