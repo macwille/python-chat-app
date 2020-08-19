@@ -2,7 +2,7 @@
 
 ## Demo
 
-**try out as admin user: Admin password: 1234 or register**
+**try out as admin user: `Admin` password: `1234` or register**
 
 Python website using Flask framework and PostgreSQL.
 
