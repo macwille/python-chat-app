@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 def login(username, password, db):
     try:
-        sql = "SELECT password, id FROM users WHERE username=:username"
+        sql = "SELECT password, id, role FROM users WHERE username=:username"
         result = db.session.execute(sql, {"username": username})
         user = result.fetchone()
     except:
@@ -19,6 +19,9 @@ def login(username, password, db):
             if check_password_hash(hash_value, password):
                 session["username"] = username
                 session["id"] = user[1]
+                if user[2] == 0:
+                    print("Admin session")
+                    session["admin"] = True
                 return True
             else:
                 print("wrong password")

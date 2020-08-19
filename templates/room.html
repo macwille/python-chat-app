@@ -3,7 +3,20 @@
 {% block header %}
 <h1>{% block title %} {{ name }} {% endblock %} </h1>
 <p>{{ content }}</p>
+
+{% if owner == session.username or session.admin %}
+<p>
+<form action=/deleteRoom method="GET">
+    <input type="hidden" name="room_id" value="{{ id }}">
+    <input type="submit" value="Delete">
+</form>
+</p>
+{% else %}
+
 <p>Owner: <b>{{ owner }}</b></p>
+
+{% endif %}
+
 {% endblock %}
 
 {% block content%}
@@ -26,7 +39,7 @@
 
 <div>
     <form action="/send" method="POST">
-        <p>new message by you, {{ session.username }}:</p>
+        <p>{{ session.username }}:</p>
         <input type="hidden" name="room_id" value="{{ id }}">
         <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea><br>
         <input type="submit" value="Send">
