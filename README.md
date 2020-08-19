@@ -1,5 +1,9 @@
 # Chat app - [Demo](https://chat404-web.herokuapp.com)
 
+## Demo
+
+**try out as admin user: Admin password: 1234 or register**
+
 Python website using Flask framework and PostgreSQL.
 
 Web-based chat room application where users can register and chat inside different subjects and rooms.
