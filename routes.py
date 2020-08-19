@@ -4,6 +4,7 @@ from flask import Flask, url_for, flash, redirect, render_template, request, ses
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 import users
+import rooms
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
@@ -63,20 +64,24 @@ def createRoom():
     room_name = request.form["room_name"]
     subject_id = request.form["subject_id"]
 
-    # TODO check user rights to subject
-
-    try:
-        sql = "INSERT INTO rooms (room_name, user_id, subject_id, visible) values(:room_name, :user_id, :subject_id, 1)"
-        db.session.execute(
-            sql, {"room_name": room_name, "user_id": user_id, "subject_id": subject_id})
-        db.session.commit()
-    except:
-        print("Error adding room")
-        flash("Problem creating room", "error")
-        return redirect(url_for("subject", id=subject_id))
-    else:
+    if rooms.createRoom(user_id, room_name, subject_id, db):
         flash("Room created", "message")
         return redirect(url_for("subject", id=subject_id))
+
+    else:
+        flash("Problem creating room", "error")
+        return redirect(url_for("subject", id=subject_id))
+
+
+@app.route("/deleteRoom/id=<int:id>")
+def deleteRoom(id):
+    print("Delete room called")
+    if rooms.deleteRoom(id, db):
+        flash("Room deleted", "message")
+        return redirect(url_for("subjects"))
+    else:
+        flash("Error deleting room", "error")
+        return redirect(url_for("subjects"))
 
 
 @app.route("/createSubject", methods=["POST", "GET"])
@@ -119,34 +124,24 @@ def subjects():
 
 @app.route("/room/id=<int:id>")
 def room(id):
-    try:
-        sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
-        result = db.session.execute(sql, {"id": id})
-        room = result.fetchone()
-        print(room)
-        room_id = room[0]
-        name = room[1]
-        username = room[2]
-
-    except:
-        flash("Problem loading the room", "error")
-        return redirect(url_for("subjects"))
-    else:
-        print("search for messages")
-        sql1 = "SELECT content, username, messages.created_at AS datetime  FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id ORDER BY messages.created_at"
-        result = db.session.execute(sql1, {"id": id})
-        messages = result.fetchall()
-
-        if not messages:
-            print("no messages found")
-            return render_template("room.html", id=room_id, name=name,  owner=username)
-        else:
-            print("messages found")
+    roomData = rooms.getRoom(id, db)
+    if roomData is not None:
+        room_id = roomData[0]
+        name = roomData[1]
+        username = roomData[2]
+        messages = rooms.getMessages(room_id, db)
+        if messages is not None:
             return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
+        else:
+            return render_template("room.html", id=room_id, name=name,  owner=username)
+    else:
+        flash("Room not found", "error")
+        return redirect(url_for("subjects"))
 
 
 @app.route("/subject/id=<int:id>")
 def subject(id):
+    # TODO check user rights
     try:
         sql = "SELECT * FROM subjects WHERE id=:id"
         result = db.session.execute(sql, {"id": id})
@@ -160,10 +155,13 @@ def subject(id):
         print("error getting data from DB")
         return redirect(url_for("subjects"))
     else:
-        sql1 = "SELECT id, room_name FROM rooms WHERE subject_id=:id"
+        sql1 = "SELECT id, room_name FROM rooms WHERE subject_id=:id AND visible=1"
         result = db.session.execute(sql1, {"id": id})
         rooms = result.fetchall()
-        return render_template("subject.html", subject_name=subject_name, rooms=rooms, id=subject_id, content=content)
+        if not rooms:
+            return render_template("subject.html", subject_name=subject_name, id=subject_id, content=content)
+        else:
+            return render_template("subject.html", subject_name=subject_name, rooms=rooms, id=subject_id, content=content)
 
 
 @app.route("/send", methods=["POST"])
@@ -171,16 +169,23 @@ def send():
     content = request.form["content"]
     room_id = request.form["room_id"]
     user_id = session["id"]
-    try:
-        sql = "INSERT INTO messages (user_id, room_id, content, created_at, visible) VALUES (:user_id, :room_id, :content, NOW(), 1)"
-        db.session.execute(
-            sql, {"user_id": user_id, "room_id": room_id, "content": content.strip()})
-        db.session.commit()
-    except:
-        print: "error inserting message to db"
-        return redirect("subjects")
-    else:
+
+    lengths = [len(x) for x in content.split()]
+    if any(l > 30 for l in lengths):
+        flash("Dont' spam", "message")
         return redirect(url_for("room", id=room_id))
+
+    else:
+        try:
+            sql = "INSERT INTO messages (user_id, room_id, content, created_at, visible) VALUES (:user_id, :room_id, :content, NOW(), 1)"
+            db.session.execute(
+                sql, {"user_id": user_id, "room_id": room_id, "content": content.strip()})
+            db.session.commit()
+        except:
+            print: "error inserting message to db"
+            return redirect("subjects")
+        else:
+            return redirect(url_for("room", id=room_id))
 
 
 @app.route("/search")
@@ -188,11 +193,32 @@ def search():
     return render_template("search.html")
 
 
+@app.route("/setVisible/id=<int:id>", methods=["GET"])
+def setVisible(id):
+    user_id = session["id"]
+    print(session["admin"])
+    try:
+        if session["admin"]:
+            sql = "UPDATE messages SET visible = 0 WHERE id = :id"
+            db.session.execute(sql, {"id": id})
+            db.session.commit()
+        else:
+            sql = "UPDATE messages SET visible = 0 WHERE id = :id AND user_id = :user_id"
+            db.session.execute(sql, {"id": id, "user_id": user_id})
+            db.session.commit()
+    except:
+        flash("Error deleteting message", "error")
+        return redirect(url_for("subjects"))
+    else:
+        flash("Message deleted", "message")
+        return redirect(url_for("subjects"))
+
+
 @app.route("/result", methods=["GET"])
 def result():
     try:
         query = request.args["query"]
-        sql = "SELECT username, room_name, content FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query"
+        sql = "SELECT username, room_name, content, messages.id AS messages_id FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query AND messages.visible = 1"
         sql_query = db.session.execute(sql, {"query": "%"+query+"%"})
         results = sql_query.fetchall()
     except:

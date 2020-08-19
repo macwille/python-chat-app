@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block header %}
-<h1>{% block title %} Search {% endblock %} </h1>
+<div>
+    <h1>{% block title %} Search {% endblock %} </h1>
+</div>
 {% endblock %}
 
 {% block content%}
@@ -10,16 +12,26 @@
 <div>
     {% if query is defined %}
     <h4> found {{ results|length }} matches for '{{ query }}'</h4>
-
     {% endif %}
 
-
     {% if results is defined %}
-    <ul>
-        {% for result in results %}
-        <li>{{ result[0] }}@{{ result[1]}}: '{{ result[2] }}'</li>
-        {% endfor %}
-    </ul>
+    <div class="message-wrapper">
+        <fieldset>
+            <legend>Results</legend>
+            {% for result in results %}
+
+            {% if result[0] == session.username or session.admin %}
+            <p class="message"><a href="/setVisible/id={{ result[3] }}"><b>Delete - </b></a><b>{{result[0]}}
+                    ({{result[1]}}):
+                </b>{{ result[2]}}</p>
+
+            {% else %}
+            <p class="message"><b>{{result[0]}} ({{result[1]}}): </b>{{ result[2]}}</p>
+            {% endif %}
+
+            {% endfor %}
+        </fieldset>
+    </div>
     {% endif %}
 
 

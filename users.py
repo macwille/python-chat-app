@@ -19,6 +19,7 @@ def login(username, password, db):
             if check_password_hash(hash_value, password):
                 session["username"] = username
                 session["id"] = user[1]
+                session["admin"] = False
                 if user[2] == 0:
                     print("Admin session")
                     session["admin"] = True
@@ -31,6 +32,7 @@ def login(username, password, db):
 def logout():
     session.pop("username", None)
     session.pop("id", None)
+    session.pop("admin", False)
 
 
 def register(username, password, db):

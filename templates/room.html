@@ -6,11 +6,10 @@
 
 {% if owner == session.username or session.admin %}
 <p>
-<form action=/deleteRoom method="GET">
-    <input type="hidden" name="room_id" value="{{ id }}">
-    <input type="submit" value="Delete">
-</form>
+    You own this room -
+    <a href="/deleteRoom/id={{ id }}">Delete</a>
 </p>
+
 {% else %}
 
 <p>Owner: <b>{{ owner }}</b></p>
@@ -29,11 +28,16 @@
         {% if messages is defined %}
 
         {% for message in messages %}
+
+        {% if message[1] == session.username or session.admin %}
+        <p class="message"><a href="/setVisible/id={{ message[3] }}"><b>Delete - </b></a><b>{{message[1]}}
+                ({{message[2].strftime('%d-%m-%y')}}): </b>{{ message[0]}}</p>
+        {% else%}
         <p class="message"><b>{{message[1]}} ({{message[2].strftime('%d-%m-%y')}}): </b>{{ message[0]}}</p>
+        {% endif %}
 
         {% endfor %}
         {% endif %}
-
     </fieldset>
 </div>
 

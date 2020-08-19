@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block header %}
+
 <h1>{% block title %} {{ subject_name }} {% endblock %} </h1>
-<p> {{ content }} </p>
+<p>'{{ content }}'</p>
 {% endblock %}
 
 {% block content%}
@@ -10,21 +11,26 @@
 {% if session.username %}
 
 <div>
+    {% if rooms is defined %}
     <fieldset>
         <legend>Rooms</legend>
-        {% if rooms is defined %}
         <ul>
             {% for room in rooms %}
             <li><a href="{{ url_for('room', id=room[0]) }}">{{ room[1] }}</a></li>
             <br>
             {% endfor %}
         </ul>
-        {% endif %}
+
     </fieldset>
+    {% else%}
+
+    <p>Subject has no rooms yet</p>
+
+    {% endif %}
 </div>
 
 <div>
-    <p>You can create a new room <a href="/create/id={{ id }}">here</a></p>
+    <p>Create a new room <a href="/create/id={{ id }}">here</a></p>
 </div>
 
 {% else %}
