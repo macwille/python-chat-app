@@ -16,7 +16,7 @@ Web-based chat room application where users can register and chat inside differe
 
 * User can send messages
 
-* User can search for messages
+* User can search for his/her messages
 
 * Can create rooms
 
@@ -26,7 +26,19 @@ Web-based chat room application where users can register and chat inside differe
 
 * Admin user
 
-## Possible future ideas
+### Admin user can
+
+* Enter any subject or room
+
+* Delete any room or message
+
+* Search for any messages
+
+## Coming Features
+
+* CSRF tokens
+
+## Possible Future Ideas
 
 * Can edit messages, rooms and subjects
 
