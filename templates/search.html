@@ -36,6 +36,7 @@
 
 
     <form action="/result" method="GET">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <textarea name="query" rows="3" cols="40" required></textarea>
         <br>
         <input type="submit" value="Search">

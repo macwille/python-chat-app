@@ -1,5 +1,6 @@
 from flask import session, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+import os
 
 
 def login(username, password, db):
@@ -17,6 +18,7 @@ def login(username, password, db):
             if check_password_hash(hash_value, password):
                 session["username"] = username
                 session["id"] = user[1]
+                session["csrf_token"] = os.urandom(16).hex()
                 session["admin"] = False
                 if user[2] == 0:
                     print("Logged in as Admin")
@@ -27,15 +29,10 @@ def login(username, password, db):
                 return False
 
 
-
-def check_token(token):
-    return session["token"] == token
-
-
 def logout():
     session.pop("username", None)
     session.pop("id", None)
-    session.pop("token", None)
+    session.pop("csrf_token", None)
     session.pop("admin", False)
 
 

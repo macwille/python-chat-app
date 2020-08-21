@@ -16,6 +16,7 @@
 <div>
     <h2>This area is restricted by a password</h2>
     <form action="/subjectLogin" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <fieldset>
             <legend>{{ subject_name }} Login</legend>
             <input type="hidden" name="id" value="{{ id }}">

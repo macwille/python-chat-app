@@ -26,6 +26,8 @@ Web-based chat room application where users can register and chat inside differe
 
 * Admin user
 
+* Protected against SQL injections, XSS and CSFR attacks
+
 ### Admin user can
 
 * Enter any subject or room
@@ -33,10 +35,6 @@ Web-based chat room application where users can register and chat inside differe
 * Delete any room or message
 
 * Search for any messages
-
-## Coming Features
-
-* CSRF tokens
 
 ## Possible Future Ideas
 

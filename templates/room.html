@@ -43,6 +43,7 @@
 
 <div>
     <form action="/send" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <p>{{ session.username }}:</p>
         <input type="hidden" name="room_id" value="{{ id }}">
         <textarea name="content" rows="3" cols="40" maxlength="130" required></textarea><br>

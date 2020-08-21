@@ -1,6 +1,6 @@
 from app import app
 from os import getenv
-from flask import Flask, url_for, flash, redirect, render_template, request, session
+from flask import Flask, url_for, flash, redirect, render_template, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from services import user_service, room_service, subject_service
@@ -59,6 +59,7 @@ def create(id):
 
 @app.route("/createRoom", methods=["POST", "GET"])
 def createRoom():
+    check_token()
     user_id = session["id"]
     room_name = request.form["room_name"]
     subject_id = request.form["subject_id"]
@@ -94,6 +95,7 @@ def deleteRoom(id):
 
 @app.route("/createSubject", methods=["POST", "GET"])
 def createSubject():
+    check_token()
     user_id = session["id"]
     subject_name = request.form["subject_name"]
     password = request.form["password"]
@@ -163,6 +165,7 @@ def subject(id):
 
 @app.route("/subjectLogin", methods=["POST"])
 def subjectLogin():
+    check_token()
     subject_id = request.form["id"]
     password = request.form["password"]
 
@@ -175,8 +178,9 @@ def subjectLogin():
         return redirect(url_for("subject", id=subject_id))
 
 
-@ app.route("/send", methods=["POST"])
+@app.route("/send", methods=["POST"])
 def send():
+    check_token()
     content = request.form["content"]
     room_id = request.form["room_id"]
     user_id = session["id"]
@@ -200,13 +204,14 @@ def send():
         return redirect(url_for("subjects"))
 
 
-@ app.route("/search")
+@app.route("/search")
 def search():
     return render_template("search.html")
 
 
-@ app.route("/setVisible/id=<int:id>", methods=["GET"])
+@app.route("/setVisible/id=<int:id>", methods=["GET"])
 def setVisible(id):
+    check_token()
     user_id = session["id"]
     try:
         if session["admin"]:
@@ -225,8 +230,9 @@ def setVisible(id):
         return redirect(url_for("subjects"))
 
 
-@ app.route("/result", methods=["GET"])
+@app.route("/result", methods=["GET"])
 def result():
+    check_token()
     username = session["username"]
     try:
         query = request.args["query"]
@@ -248,3 +254,17 @@ def result():
             return redirect(url_for("search"))
         else:
             return render_template("search.html", results=results, query=query)
+
+
+def check_token():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        print("csrf_token failed")
+        abort(403)
+    else:
+        print("csrf_token correct")
+
+
+@app.errorhandler(403)
+def resource_not_found(e):
+    flash("Forbidden 403", "error")
+    return render_template("index.html")
