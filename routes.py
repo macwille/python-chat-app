@@ -211,7 +211,6 @@ def search():
 
 @app.route("/setVisible/id=<int:id>", methods=["GET"])
 def setVisible(id):
-    check_token()
     user_id = session["id"]
     try:
         if session["admin"]:
@@ -232,7 +231,6 @@ def setVisible(id):
 
 @app.route("/result", methods=["GET"])
 def result():
-    check_token()
     username = session["username"]
     try:
         query = request.args["query"]
@@ -247,6 +245,7 @@ def result():
 
         results = sql_query.fetchall()
     except:
+        flash("Error executing search", "error")
         return redirect(url_for("search"))
     else:
         if not results:
