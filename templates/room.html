@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block header %}
-<h1>{% block title %} {{ name }} - {{ id }}{% endblock %} </h1>
+<h1>{% block title %} {{ name }} {% endblock %} </h1>
 <p>{{ content }}</p>
 
 {% if owner == session.username or session.admin %}

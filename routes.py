@@ -217,6 +217,8 @@ def deleteMessage():
     check_token()
     user_id = session["id"]
     message_id = request.form["message_id"]
+    page = request.referrer
+    print(page)
     try:
         if session["admin"]:
             sql = "UPDATE messages SET visible = 0 WHERE id = :id"
@@ -228,10 +230,10 @@ def deleteMessage():
             db.session.commit()
     except:
         flash("Error deleteting message", "error")
-        return redirect(url_for("search"))
+        return redirect(url_for("subjects"))
     else:
         flash("Message deleted", "message")
-        return redirect(url_for("search"))
+        return redirect(page)
 
 
 @app.route("/result", methods=["GET"])
@@ -268,7 +270,6 @@ def check_token():
         abort(403)
     else:
         print("Token checked")
-
 
 
 @app.errorhandler(403)
