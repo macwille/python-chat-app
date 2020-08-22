@@ -4,37 +4,36 @@
 
 **try out as an admin user - username: `Admin` password: `1234` or register**
 
-Python website using Flask framework and PostgreSQL.
+Chat room website where users can send an read messages, divided into different subjects and rooms.
 
-Web-based chat room application where users can register and chat inside different subjects and rooms.
+Writen in Python, using Flask and PostgreSQL.
 
-## Current Features
+If you want to run the website locally you will need to have PostgreSQL installed.
 
-* Database support
 
-* User can register and log in with same account.
+## Features
 
-* User can send messages
+* Information saved to Database
 
-* User can search for his/her messages
+* Registration and login
 
-* Can create rooms
+* User can create rooms and subjects
 
-* User can delete his/her messages
+* Send and delete messages
 
-* User can create resricted subjects
+* User can create password restricted subjects
 
 * Admin user
 
 * Protected against SQL injections, XSS and CSFR attacks
 
-### Admin user can
+### Admin user
 
-* Enter any subject or room
+* Has access to all rooms and subjects
 
-* Delete any room or message
+* Can delete any room or subject
 
-* Search for any messages
+* Can search all messages
 
 ## Possible Future Ideas
 
@@ -48,11 +47,15 @@ Web-based chat room application where users can register and chat inside differe
 
 After navigating to the project folder, first steps when loading is to set up virtual enviroment to hold the project and loading dependencies.
 
-### Linux
+If the command `pip install -r requirements.txt` doesn't work correctly you will need to to manually download required modules using `pip install module-name`. 
+
+You can check all used modules from the `requirements.txt` file.
+
+### Linux & macOS
 
 * `python3 -m venv venv` - Creates a local  virtual envirnoment for the project with a name 'venv'.
 
-* `source venv/bin/activate` - Activates the virtual envirnoment.
+* `. venv/bin/activate` - Activates the virtual envirnoment.
 
 * **(venv)** `pip install -r requirements.txt` - Checks and downloads the project dependencies.
 
@@ -62,7 +65,7 @@ After navigating to the project folder, first steps when loading is to set up vi
 
 * `py -3 -m venv venv` - Creates local python 3 virtual envirnoment folder named 'venv'.
 
-* `venv\Scripts\activate` - Activates virtual envirnoment.
+* `venv\Scripts\activate` - Activates the virtual envirnoment.
 
 * **(venv)** `pip install -r requirements.txt` - installs dependecies.
 
@@ -71,12 +74,12 @@ After navigating to the project folder, first steps when loading is to set up vi
 
 ### PostgreSQL
 
-If you have PostgreSQL installed you can run these commands.
+If you have PostgreSQL installed you can run these commands, you will need to create a database inside your cluster.
 
 
-* `DATABASE_URL=postgresql://user:password@localhost:PORT/database` - template for .env configuration.
+* `DATABASE_URL=postgresql://user:password@localhost:PORT/database-name` - template for .env configuration.
 
-* `psql -U user/superuser -d database < schema.sql` Creates SQL-tables.
+* `psql -U user/superuser -d database-name < schema.sql` Creates SQL-tables.
 
-* `psql -U user/superuser -d database < drop.sql` Deletes all SQL-tables.
+* `psql -U user/superuser -d database-name < drop.sql` Deletes all SQL-tables.
 
