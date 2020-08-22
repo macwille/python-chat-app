@@ -30,9 +30,10 @@ def login():
 
 @app.route("/logout")
 def logout():
+    page = request.referrer
     user_service.logout()
     flash("Logged out", "message")
-    return redirect(url_for("index"))
+    return redirect(page)
 
 
 @app.route("/register")
@@ -218,7 +219,6 @@ def deleteMessage():
     user_id = session["id"]
     message_id = request.form["message_id"]
     page = request.referrer
-    print(page)
     try:
         if session["admin"]:
             sql = "UPDATE messages SET visible = 0 WHERE id = :id"
