@@ -2,36 +2,6 @@ from flask import session, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-def has_right_to_room(user_id, room_id, db):
-    if session["admin"]:
-        print("Admin rights")
-        return True
-    else:
-        sql = "SELECT COUNT(*) FROM subject_rights WHERE user_id = :user_id"
-        result = db.session.execute(
-            sql, {"user_id": user_id, "subject_id": subect_id})
-        hasRight = result.fetchone()[0]
-        if hasRight > 0:
-            return True
-        else:
-            return False
-
-
-def is_owner(user_id, room_id, db):
-    if session["admin"]:
-        print("Admin rights")
-        return True
-    else:
-        sql = "SELECT COUNT(*) FROM rooms WHERE user_id = :user_id AND id = :room_id"
-        result = db.session.execute(
-            sql, {"user_id": user_id, "room_id": room_id})
-        is_owner = result.fetchone()[0]
-        if is_owner > 0:
-            return True
-        else:
-            return False
-
-
 def create_room(user_id, room_name, subject_id, db):
     try:
         sql = "INSERT INTO rooms (room_name, user_id, subject_id, visible) values(:room_name, :user_id, :subject_id, 1)"
@@ -87,3 +57,18 @@ def get_subject(room_id, db):
         return None
     else:
         return subject_id
+
+
+def is_owner(user_id, room_id, db):
+    if session["admin"]:
+        print("Admin rights")
+        return True
+    else:
+        sql = "SELECT COUNT(*) FROM rooms WHERE user_id = :user_id AND id = :room_id"
+        result = db.session.execute(
+            sql, {"user_id": user_id, "room_id": room_id})
+        is_owner = result.fetchone()[0]
+        if is_owner > 0:
+            return True
+        else:
+            return False
