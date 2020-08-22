@@ -78,11 +78,14 @@ def createRoom():
         return redirect(url_for("subject", id=subject_id))
 
 
-@app.route("/deleteRoom/id=<int:id>")
-def deleteRoom(id):
+@app.route("/deleteRoom", methods=["GET", "POST"])
+def deleteRoom():
+    check_token()
     user_id = session["id"]
-    if room_service.is_owner(user_id, id, db):
-        if room_service.delete_room(id, db):
+    room_id = request.form["room_id"]
+    print(room_id)
+    if room_service.is_owner(user_id, room_id, db):
+        if room_service.delete_room(room_id, db):
             flash("Room deleted", "message")
             return redirect(url_for("subjects"))
         else:
@@ -209,24 +212,26 @@ def search():
     return render_template("search.html")
 
 
-@app.route("/setVisible/id=<int:id>", methods=["GET"])
-def setVisible(id):
+@app.route("/deleteMessage", methods=["GET", "POST"])
+def deleteMessage():
+    check_token()
     user_id = session["id"]
+    message_id = request.form["message_id"]
     try:
         if session["admin"]:
             sql = "UPDATE messages SET visible = 0 WHERE id = :id"
-            db.session.execute(sql, {"id": id})
+            db.session.execute(sql, {"id": message_id})
             db.session.commit()
         else:
             sql = "UPDATE messages SET visible = 0 WHERE id = :id AND user_id = :user_id"
-            db.session.execute(sql, {"id": id, "user_id": user_id})
+            db.session.execute(sql, {"id": message_id, "user_id": user_id})
             db.session.commit()
     except:
         flash("Error deleteting message", "error")
-        return redirect(url_for("subjects"))
+        return redirect(url_for("search"))
     else:
         flash("Message deleted", "message")
-        return redirect(url_for("subjects"))
+        return redirect(url_for("search"))
 
 
 @app.route("/result", methods=["GET"])
@@ -256,11 +261,14 @@ def result():
 
 
 def check_token():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        print("csrf_token failed")
+    token = session["csrf_token"]
+    form_token = request.form["csrf_token"]
+    if token != form_token:
+        print("Failed token")
         abort(403)
     else:
-        print("csrf_token correct")
+        print("Token checked")
+
 
 
 @app.errorhandler(403)

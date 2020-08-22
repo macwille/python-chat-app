@@ -21,10 +21,16 @@
             {% for result in results %}
 
             {% if result[0] == session.username or session.admin %}
-            <p class="message"><a href="/setVisible/id={{ result[3] }}"><b>Delete - </b></a><b>{{result[0]}}
+            <form action="/deleteMessage" method="POST">
+                <p class="message">
+                <input type="hidden" name="message_id" value=" {{ result[3] }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="hidden" name="query" value=" {{ query }}">
+                <input type="submit" value="Delete">
+                </a><b>{{result[0]}}
                     ({{result[1]}}):
                 </b>{{ result[2]}}</p>
-
+            </form>
             {% else %}
             <p class="message"><b>{{result[0]}} ({{result[1]}}): </b>{{ result[2]}}</p>
             {% endif %}
@@ -36,7 +42,6 @@
 
 
     <form action="/result" method="GET">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <textarea name="query" rows="3" cols="40" required></textarea>
         <br>
         <input type="submit" value="Search">
