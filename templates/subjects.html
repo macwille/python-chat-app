@@ -4,27 +4,34 @@
 
 {% block header %}
 <h1> Subjects </h1>
+<p>You can create a new subject <a href="/create/id=0">Here</a></p>
 {% endblock %}
 
 {% block content%}
 
 {% if session.username %}
-<div>
+<div class="grid-wrapper">
     {% if subjects is defined %}
-    <ul>
+    <ul class="grid-list">
         {% for subject in subjects %}
 
-        {% if subject[2] ==  0%}
-
-        <li><a href="{{ url_for('subject', id=subject[0]) }}">{{ subject[1] }}</a></li>
+        {% if subject[2] ==  0 %}
+        <a href="{{ url_for('subject', id=subject[0]) }}">
+            <li>
+                <p>{{ subject[1] }}</p>
+            </li>
+        </a>
         {% else %}
-        <li><a href="{{ url_for('subject', id=subject[0]) }}">{{ subject[1] }} 🔐</a></li>
+        <a href="{{ url_for('subject', id=subject[0]) }}">
+            <li>
+                <p>{{ subject[1] }} 🔐</p>
+            </li>
+        </a>
         {% endif %}
 
         {% endfor %}
     </ul>
     {% endif %}
-    <p>Create a new subject <a href="/create/id=0">Here</a></p>
 </div>
 
 {% else %}

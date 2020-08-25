@@ -6,7 +6,7 @@ def create_room(user_id, room_name, subject_id, db):
     try:
         sql = "INSERT INTO rooms (room_name, user_id, subject_id, visible) values(:room_name, :user_id, :subject_id, 1)"
         db.session.execute(
-            sql, {"room_name": room_name, "user_id": user_id, "subject_id": subject_id})
+            sql, {"room_name": room_name.strip(), "user_id": user_id, "subject_id": subject_id})
         db.session.commit()
     except:
         return False
@@ -28,14 +28,11 @@ def delete_room(room_id, db):
 
 
 def get_room(room_id, db):
-    try:
-        sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
-        result = db.session.execute(sql, {"id": room_id})
-        roomData = result.fetchone()
-    except:
-        return None
-    else:
-        return roomData
+    sql = "SELECT rooms.id AS room_id, room_name, username FROM rooms LEFT JOIN users ON user_id = users.id WHERE rooms.id=:id AND rooms.visible=1"
+    result = db.session.execute(sql, {"id": room_id})
+    roomData = result.fetchone()
+
+    return roomData
 
 
 def get_messages(room_id, db):
@@ -49,14 +46,10 @@ def get_messages(room_id, db):
 
 
 def get_subject(room_id, db):
-    try:
-        sql = "SELECT subject_id FROM rooms WHERE id = :room_id"
-        result = db.session.execute(sql, {"room_id": room_id})
-        subject_id = result.fetchone()[0]
-    except:
-        return None
-    else:
-        return subject_id
+    sql = "SELECT subject_id FROM rooms WHERE id = :room_id"
+    result = db.session.execute(sql, {"room_id": room_id})
+    subject_id = result.fetchone()[0]
+    return subject_id
 
 
 def is_owner(user_id, room_id, db):

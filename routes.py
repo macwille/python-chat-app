@@ -30,10 +30,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    page = request.referrer
     user_service.logout()
     flash("Logged out", "message")
-    return redirect(page)
+    return redirect(url_for("index"))
 
 
 @app.route("/register")
@@ -41,8 +40,8 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/registerNew", methods=["POST", "GET"])
-def registerNew():
+@app.route("/new_user", methods=["POST", "GET"])
+def new_user():
     username = request.form["username"]
     password = request.form["password"]
     if user_service.register(username, password, db):
@@ -58,8 +57,8 @@ def create(id):
     return render_template("create.html", id=id)
 
 
-@app.route("/createRoom", methods=["POST", "GET"])
-def createRoom():
+@app.route("/create_room", methods=["POST", "GET"])
+def create_room():
     check_token()
     user_id = session["id"]
     room_name = request.form["room_name"]
@@ -79,8 +78,8 @@ def createRoom():
         return redirect(url_for("subject", id=subject_id))
 
 
-@app.route("/deleteRoom", methods=["GET", "POST"])
-def deleteRoom():
+@app.route("/delete_room", methods=["GET", "POST"])
+def delete_room():
     check_token()
     user_id = session["id"]
     room_id = request.form["room_id"]
@@ -97,28 +96,38 @@ def deleteRoom():
         return redirect(url_for("subjects"))
 
 
-@app.route("/createSubject", methods=["POST", "GET"])
-def createSubject():
+@app.route("/create_subject", methods=["POST", "GET"])
+def create_subject():
     check_token()
+    page = request.referrer
     user_id = session["id"]
     subject_name = request.form["subject_name"]
     password = request.form["password"]
     content = request.form["content"]
     require = request.form["require"]
 
+    if word_too_long(content):
+        flash("Description had a word that was too long", "error")
+        return redirect(page)
+
+    if require == 1 and not password.strip():
+        flash("Enter a password", "error")
+        return redirect(page)
+
     if subject_service.create_subject(user_id, subject_name, password, content, require, db):
         flash("Subject created", "message")
         return redirect(url_for("subjects"))
+
     else:
         flash("Error creating subject", "error")
-        return redirect(url_for("subjects"))
+        return redirect(page)
 
 
 @app.route("/subjects")
 def subjects():
-    subjectsData = subject_service.get_subjects(db)
-    if subjectsData is not None:
-        return render_template("subjects.html", subjects=subjectsData)
+    subjects_data = subject_service.get_subjects(db)
+    if subjects_data:
+        return render_template("subjects.html", subjects=subjects_data)
     else:
         return render_template("subjects.html")
 
@@ -131,12 +140,12 @@ def room(id):
     if subject_service.has_right(user_id, subject_id, db):
 
         roomData = room_service.get_room(id, db)
-        if roomData is not None:
+        if roomData:
             room_id = roomData[0]
             name = roomData[1]
             username = roomData[2]
             messages = room_service.get_messages(room_id, db)
-            if messages is not None:
+            if messages:
                 return render_template("room.html", id=room_id, name=name,  owner=username, messages=messages)
             else:
                 return render_template("room.html", id=room_id, name=name,  owner=username)
@@ -149,17 +158,17 @@ def room(id):
 
 @app.route("/subject/id=<int:id>")
 def subject(id):
-    subjectData = subject_service.get_subject(id, db)
-    if subjectData is not None:
-        subject_id = subjectData[0]
-        subject_name = subjectData[1]
-        secret = subjectData[2]
-        content = subjectData[3]
-        require = subjectData[4]
+    subject_data = subject_service.get_subject(id, db)
+    if subject_data:
+        subject_id = subject_data[0]
+        subject_name = subject_data[1]
+        secret = subject_data[2]
+        content = subject_data[3]
+        require = subject_data[4]
         rooms = subject_service.get_rooms(subject_id, db)
         hasRight = subject_service.has_right(session["id"], subject_id, db)
 
-        if rooms is not None:
+        if rooms:
             return render_template("subject.html", subject_name=subject_name, rooms=rooms, id=subject_id, content=content, require=require, hasRight=hasRight)
         else:
             return render_template("subject.html", subject_name=subject_name, id=subject_id, content=content, require=require, hasRight=hasRight)
@@ -167,8 +176,8 @@ def subject(id):
         return redirect(url_for("subjects"))
 
 
-@app.route("/subjectLogin", methods=["POST"])
-def subjectLogin():
+@app.route("/subject_login", methods=["POST"])
+def subject_login():
     check_token()
     subject_id = request.form["id"]
     password = request.form["password"]
@@ -190,13 +199,14 @@ def send():
     user_id = session["id"]
     subect_id = room_service.get_subject(room_id, db)
 
-    lengths = [len(x) for x in content.split()]
-    if any(l > 30 for l in lengths):
-        flash("Don't spam", "message")
+    if word_too_long(content):
+        flash("Message had a word that was too long", "message")
         return redirect(url_for("room", id=room_id))
+
     elif subject_service.has_right(user_id, subect_id, db):
         try:
-            sql = "INSERT INTO messages (user_id, room_id, content, created_at, visible) VALUES (:user_id, :room_id, :content, NOW(), 1)"
+            sql = """INSERT INTO messages (user_id, room_id, content, created_at, visible)
+            VALUES (:user_id, :room_id, :content, NOW(), 1)"""
             db.session.execute(
                 sql, {"user_id": user_id, "room_id": room_id, "content": content.strip()})
             db.session.commit()
@@ -213,8 +223,8 @@ def search():
     return render_template("search.html")
 
 
-@app.route("/deleteMessage", methods=["GET", "POST"])
-def deleteMessage():
+@app.route("/delete_message", methods=["GET", "POST"])
+def delete_message():
     check_token()
     user_id = session["id"]
     message_id = request.form["message_id"]
@@ -238,28 +248,33 @@ def deleteMessage():
 
 @app.route("/result", methods=["GET"])
 def result():
-    username = session["username"]
-    try:
-        query = request.args["query"]
-        sql = "SELECT username, room_name, content, messages.id AS messages_id FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query AND messages.visible = 1 AND username = :username"
-        sql2 = "SELECT username, room_name, content, messages.id AS messages_id FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id WHERE content LIKE :query AND messages.visible = 1"
-        if session["admin"]:
-            sql_query = db.session.execute(
-                sql2, {"query": "%"+query+"%"})
-        else:
-            sql_query = db.session.execute(
-                sql, {"query": "%"+query+"%", "username": username})
+    if not session["username"]:
+        return redirect(url_for(search))
 
-        results = sql_query.fetchall()
-    except:
-        flash("Error executing search", "error")
+    username = session["username"]
+    query = request.args["query"]
+
+    sql = """SELECT username, room_name, content, messages.id AS messages_id FROM messages
+        LEFT JOIN users ON user_id = users.id LEFT JOIN rooms on room_id = rooms.id
+        WHERE content LIKE :query AND messages.visible = 1"""
+
+    sql_not_admin = " AND username = :username"
+
+    if session["admin"]:
+        sql_query = db.session.execute(
+            sql, {"query": "%"+query+"%"})
+    else:
+        sql2 = sql + sql_not_admin
+        sql_query = db.session.execute(
+            sql2, {"query": "%"+query+"%", "username": username})
+
+    results = sql_query.fetchall()
+
+    if not results:
+        flash("No results", "message")
         return redirect(url_for("search"))
     else:
-        if not results:
-            flash("No results", "message")
-            return redirect(url_for("search"))
-        else:
-            return render_template("search.html", results=results, query=query)
+        return render_template("search.html", results=results, query=query)
 
 
 def check_token():
@@ -272,7 +287,28 @@ def check_token():
         print("Token checked")
 
 
+def word_too_long(string):
+    lengths = [len(x) for x in string.split()]
+    if any(l > 30 for l in lengths):
+        return True
+    else:
+        return False
+
+
 @app.errorhandler(403)
 def resource_not_found(e):
     flash("Forbidden 403", "error")
+    return render_template("index.html")
+
+
+@app.errorhandler(500)
+def server_error(e):
+    flash("Server encountered an internal error", "error")
+    return render_template("index.html")
+
+
+@app.errorhandler(Exception)
+def error_dump(error):
+    logout()
+    flash("Unexpected Error", "error")
     return render_template("index.html")

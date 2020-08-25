@@ -19,7 +19,11 @@
                 <li><a href="/subjects">Rooms</a></li>
                 <li><a href="/search">Search</a></li>
                 <li><a href="/register">Register</a></li>
+                {% if session.username %}
                 <li><a href="/logout">Log out</a></li>
+                {% else %}
+                <li><a href="/">Log in</a></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
@@ -44,9 +48,7 @@
             {% endwith %}
             <br>
         </div>
-        <div>
             {% block content %}{%  endblock %}
-        </div>
     </div>
     <div class="endtext">
         <hr>

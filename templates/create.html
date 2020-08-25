@@ -12,11 +12,11 @@
 {% if id > 0 %}
 
 <h2>Room</h2>
-<form action="/createRoom" method="POST">
+<form action="/create_room" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <fieldset>
         <legend>New Room</legend>
-        <p>Room Name:<br>
+        <p>Name:<br>
             <input type="text" name="room_name" maxlength="20" required></p>
         <input type="hidden" name="subject_id" value="{{ id }}">
         <input type="submit" value="Create">
@@ -26,16 +26,14 @@
 {% else %}
 
 <h2>Subject</h2>
-<form action="/createSubject" method="POST">
+<form action="/create_subject" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <fieldset>
         <legend>New Subject</legend>
-        <p>Subject Name:<br>
+        <p>Name:<br>
             <input type="text" name="subject_name" maxlength="20" required></p>
-        <p>Subject Description:<br>
-            <input type="text" name="content" maxlength="80" required></p>
-        <p>Subject password:<br>
-            <input type="password" name="password" maxlength="40" required></p>
+        <p>Description:<br>
+            <textarea name="content" rows="3" cols="40" maxlength="80" required></textarea></p>
         <p>Requires Password:<br>
             <label>
                 <input type="radio" id="require_yes" name="require" value="1" required>
@@ -45,6 +43,8 @@
                 <input type="radio" id="require_no" name="require" value="0">
                 No
             </label></p>
+        <p>Password:<br>
+            <input type="password" name="password" maxlength="40"></p>
         <input type="submit" value="Create">
     </fieldset>
 </form>

@@ -3,7 +3,9 @@
 {% block header %}
 
 <h1>{% block title %} {{ subject_name }} {% endblock %} </h1>
-<p>Description: '{{ content }}'</p>
+<p style="font-size:16px;">'{{ content }}'</p>
+
+
 {% endblock %}
 
 {% block content%}
@@ -15,7 +17,7 @@
 
 <div>
     <h2>This area is restricted by a password</h2>
-    <form action="/subjectLogin" method="POST">
+    <form action="/subject_login" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <fieldset>
             <legend>{{ subject_name }} Login</legend>
@@ -28,25 +30,27 @@
 </div>
 
 {% else %}
-<div>
+
+<p>You can create a new room <a href="/create/id={{ id }}">here</a></p>
+
+<div class="grid-wrapper">
     {% if rooms is defined and rooms|length > 0 %}
-    <fieldset>
-        <legend>Rooms</legend>
-        <ul>
-            {% for room in rooms %}
-            <li><a href="{{ url_for('room', id=room[0]) }}">{{ room[1] }}</a></li>
-            <br>
+    <ul class="grid-list">
+        {% for room in rooms %}
+        <a href="{{ url_for('room', id=room[0]) }}">
+            <li>
+                <p>
+                    {{ room[1] }}
+                </p>
+            </li>
             {% endfor %}
-        </ul>
-    </fieldset>
+        </a>
+    </ul>
     {% else %}
-    <p>This subject doesn't have any rooms yet</p>
+    <p>{{ subject_name }} doesn't have any rooms yet</p>
     {% endif %}
 </div>
 
-<div>
-    <p>Create a new room <a href="/create/id={{ id }}">here</a></p>
-</div>
 
 {% endif%}
 

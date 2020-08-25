@@ -5,9 +5,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 def create_subject(user_id, subject_name, password, content, require, db):
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO subjects (subject_name, password, content, require_permission) values (:subject_name, :password, :content, :require_permission)"
+        sql = """INSERT INTO subjects (subject_name, password, content, require_permission) 
+        VALUES (:subject_name, :password, :content, :require_permission)"""
+
         db.session.execute(
-            sql, {"subject_name": subject_name, "password": hash_value, "content": content, "require_permission": require})
+            sql, {"subject_name": subject_name.strip(), "password": hash_value, "content": content.strip(), "require_permission": require})
         db.session.commit()
     except:
         return False
@@ -17,60 +19,48 @@ def create_subject(user_id, subject_name, password, content, require, db):
 
 
 def get_subjects(db):
-    try:
-        sql = "SELECT id, subject_name, require_permission FROM subjects"
-        result = db.session.execute(sql)
-        subjectsData = result.fetchall()
-    except:
-        return None
-    else:
-        return subjectsData
+    sql = "SELECT id, subject_name, require_permission FROM subjects"
+    result = db.session.execute(sql)
+    subjectsData = result.fetchall()
+
+    return subjectsData
 
 
 def get_subject(subject_id, db):
-    try:
-        sql = "SELECT * FROM subjects WHERE id=:id"
-        result = db.session.execute(sql, {"id": subject_id})
-        subject = result.fetchone()
-    except:
-        return None
-    else:
-        return subject
+    sql = "SELECT * FROM subjects WHERE id=:id"
+    result = db.session.execute(sql, {"id": subject_id})
+    subject = result.fetchone()
+
+    return subject
 
 
 def get_rooms(subject_id, db):
-    try:
-        sql = "SELECT id, room_name FROM rooms WHERE subject_id=:id AND visible=1"
-        result = db.session.execute(sql, {"id": subject_id})
-        roomsData = result.fetchall()
-    except:
-        return None
-    else:
-        return roomsData
+    sql = "SELECT id, room_name FROM rooms WHERE subject_id=:id AND visible=1"
+    result = db.session.execute(sql, {"id": subject_id})
+    roomsData = result.fetchall()
+
+    return roomsData
 
 
 def is_secret(subject_id, db):
-    try:
-        sql = "SELECT COUNT(*) FROM subjects WHERE id=:id AND require_permission=1"
-        result = db.session.execute(sql, {"id": subject_id})
-        secret = result.fetchone()[0]
-    except:
-        print("Error checking is_secret")
-        return False
+    sql = "SELECT COUNT(*) FROM subjects WHERE id=:id AND require_permission=1"
+    result = db.session.execute(sql, {"id": subject_id})
+    secret = result.fetchone()[0]
+
+    if secret > 0:
+        print("Is secret")
+        return True
     else:
-        if secret > 0:
-            print("Is secret")
-            return True
-        else:
-            print("Not Secret")
-            return False
+        print("Not Secret")
+        return False
 
 
 def add_right(user_id, subject_name, db):
     try:
-        sql = "INSERT INTO subject_rights (user_id, subject_id) values (:user_id, (SELECT id FROM subjects WHERE subject_name = :subject_name))"
+        sql = """INSERT INTO subject_rights (user_id, subject_id) 
+        VALUES (:user_id, (SELECT id FROM subjects WHERE subject_name = :subject_name))"""
         db.session.execute(
-            sql, {"user_id": user_id, "subject_name": subject_name})
+            sql, {"user_id": user_id, "subject_name": subject_name.strip()})
         db.session.commit()
     except:
         print("Error adding rights")
@@ -80,7 +70,7 @@ def add_right(user_id, subject_name, db):
 
 def add_rights_id(user_id, subject_id, db):
     try:
-        sql = "INSERT INTO subject_rights (user_id, subject_id) values (:user_id, :subject_id)"
+        sql = "INSERT INTO subject_rights(user_id, subject_id) VALUES(: user_id, : subject_id)"
         db.session.execute(
             sql, {"user_id": user_id, "subject_id": subject_id})
         db.session.commit()
@@ -96,21 +86,17 @@ def has_right(user_id, subject_id, db):
         return True
     else:
         if is_secret(subject_id, db):
-            try:
-                sql = "SELECT COUNT(*) FROM subject_rights WHERE user_id = :user_id AND subject_id = :subject_id"
-                result = db.session.execute(
-                    sql, {"user_id": user_id, "subject_id": subject_id})
-                hasRight = result.fetchone()[0]
-            except:
-                print("Error checking rights")
-                return False
+            sql = "SELECT COUNT(*) FROM subject_rights WHERE user_id = :user_id AND subject_id = :subject_id"
+            result = db.session.execute(
+                sql, {"user_id": user_id, "subject_id": subject_id})
+            hasRight = result.fetchone()[0]
+
+            if hasRight > 0:
+                print("User has rights to subject_id", subject_id)
+                return True
             else:
-                if hasRight > 0:
-                    print("User has rights to subject_id", subject_id)
-                    return True
-                else:
-                    print("User doesn't have rights to subject_id", subject_id)
-                    return False
+                print("User doesn't have rights to subject_id", subject_id)
+                return False
         else:
             return True
 

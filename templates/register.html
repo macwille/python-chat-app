@@ -13,7 +13,7 @@
 
 {% else %}
 
-<form action="/registerNew" method="POST">
+<form action="/new_user" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <fieldset>
         <legend>Register</legend>
