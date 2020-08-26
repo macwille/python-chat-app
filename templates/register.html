@@ -7,10 +7,12 @@
 {% block content%}
 
 {% if session.username %}
+
 <p>You are logged in as '{{ session.username }}' </p>
 <br>
 <a href="/logout">Log out</a>
 
+<!-- If not logged in-->
 {% else %}
 
 <form action="/new_user" method="POST">
@@ -18,13 +20,14 @@
     <fieldset>
         <legend>Register</legend>
         <p>Username:<br>
-            <input type="text" name="username" maxlength="20" required></p>
+            <input type="text" name="username" maxlength="20" autocomplete="off" required></p>
         <p>Password:<br>
             <input type="password" name="password" maxlength="30" required></p><br>
 
         <input type="submit" value="Register">
     </fieldset>
 </form>
+
 {% endif %}
 
 {% endblock %}

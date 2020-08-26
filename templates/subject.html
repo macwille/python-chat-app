@@ -29,12 +29,15 @@
     </form>
 </div>
 
+<!-- Has right to room or room is public -->
 {% else %}
 
 <p>You can create a new room <a href="/create/id={{ id }}">here</a></p>
 
+
 <div class="grid-wrapper">
     {% if rooms is defined and rooms|length > 0 %}
+    <h2>Select room</h2>
     <ul class="grid-list">
         {% for room in rooms %}
         <a href="{{ url_for('room', id=room[0]) }}">
@@ -54,14 +57,18 @@
 
 {% endif%}
 
+<!-- If not logged in-->
 {% else %}
-<p> Log in to view the rooms</p>
-<br>
-<a href="/">Log in</a>
-<br>
-or
-<br>
-<a href="/register">Register</a>
+
+<p>
+    Log in to view the rooms
+    <br>
+    <a href="/">Log in</a>
+    <br>
+    or
+    <br>
+    <a href="/register">Register</a>
+</p>
 
 {% endif %}
 

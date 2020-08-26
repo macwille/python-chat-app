@@ -15,40 +15,50 @@
     {% endif %}
 
     {% if results is defined %}
-    <div class="message-wrapper">
-        <fieldset>
-            <legend>Results</legend>
-            {% for result in results %}
+    <div class="chat-wrapper">
+        {% for result in results %}
 
-            {% if result[0] == session.username or session.admin %}
-            <form action="/delete_message" method="POST">
-                <p class="message">
-                    <input type="hidden" name="message_id" value=" {{ result[3] }}">
-                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                    <input type="hidden" name="query" value=" {{ query }}">
-                    <input type="submit" value="Delete">
-                    </a><b>{{result[0]}}
-                        ({{result[1]}}):
-                    </b>{{ result[2]}}</p>
-            </form>
-            {% else %}
-            <p class="message"><b>{{result[0]}} ({{result[1]}}): </b>{{ result[2]}}</p>
-            {% endif %}
+        {% if result[0] == session.username or session.admin %}
+        <form action="/delete_message" method="POST">
+            <p class="message">
+                <input type="hidden" name="message_id" value=" {{ result[3] }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="hidden" name="query" value=" {{ query }}">
+                <input type="submit" value="Delete">
+                <b>{{result[0]}}
+                    ({{result[1]}}):
+                </b>
+            <div style="text-transform: none;">{{ result[2]}}</div>
+            </p>
+        </form>
 
-            {% endfor %}
-        </fieldset>
+        <!-- If message is not users -->
+        {% else %}
+
+        <p class="message"><b>{{result[0]}} ({{result[1]}}): </b>
+        <div style="text-transform: none;">{{ result[2]}}</div>
+        </p>
+
+        {% endif %}
+
+        {% endfor %}
+
     </div>
+
     {% endif %}
 
-
     <form action="/result" method="GET">
-        <textarea name="query" rows="3" cols="40" required></textarea>
-        <br>
-        <input type="submit" value="Search">
+
+        <div class="textarea-wrapper">
+            <input type="text" placeholder="Search.." name="query" autocomplete="off" maxlength="200" required>
+            <input type="submit" value="Search">
+        </div>
     </form>
 </div>
 
+<!-- If not logged in-->
 {% else %}
+
 <div>
     <p> You must be logged in to use the search function</p>
     <a href="/">Log in</a>
@@ -57,6 +67,7 @@
     <br>
     <a href="/register">Register</a>
 </div>
+
 {% endif %}
 
 {% endblock %}

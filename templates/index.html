@@ -2,18 +2,22 @@
 {% block title %} Home {% endblock %}
 
 {% block header %}
+
 <h1>Welcome to Chat404</h1>
 {{ message }}
+
 {% endblock %}
 
 {% block content %}
 
 {% if session.username %}
+
 <h4>You are logged in as '{{ session.username }}' </h4>
 To chat go to <a href="/subjects">Rooms</a>
 <p>or</p>
 <a href="/logout">Log out</a>
 
+<!-- If not logged in-->
 {% else %}
 
 <h2> Log in to chat!</h2>

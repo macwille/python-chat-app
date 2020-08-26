@@ -25,65 +25,71 @@
 
 {% if session.username %}
 
-<div>
 
-    {% if messages is defined %}
-    <fieldset>
-        <legend>Messages</legend>
-        {% for message in messages %}
 
-        {% if message[1] == session.username or session.admin %}
+{% if messages is defined %}
+<h3>Messages</h3>
+<div class="chat-wrapper">
+    {% for message in messages %}
 
-        <ul class="message-list">
-            <li>
-                <form action="/delete_message" method="POST">
-                    <p class="message-paragraph">
-                        <input type="hidden" name="message_id" value=" {{ message[3] }}">
-                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        <input type="submit" value="Delete">
-                        <b>{{message[1]}}</b>
-                        {{ message[0]}}
-                        <span>{{message[2].strftime('%d-%m-%y')}}</span>
-                    </p>
-                </form>
-            </li>
-        </ul>
+    {% if message[1] == session.username or session.admin %}
 
-        {% else%}
-        <ul class="message-list">
-            <li>
+    <ul class="message-list">
+        <li>
+            <form action="/delete_message" method="POST">
                 <p class="message-paragraph">
+                    <input type="hidden" name="message_id" value=" {{ message[3] }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="submit" value="Delete">
                     <b>{{message[1]}}</b>
-                    {{ message[0] }}<span>{{message[2].strftime('%d-%m-%y')}}</span>
+                    {{ message[0]}}
+                    <span>{{message[2].strftime('%d-%m-%y')}}</span>
                 </p>
-            </li>
-        </ul>
-        {% endif %}
+            </form>
+        </li>
+    </ul>
 
-        {% endfor %}
-    </fieldset>
+    <!-- If message is not users -->
     {% else %}
-    <div>
-        <p>No messages yet</p>
-    </div>
+    <ul class="message-list">
+        <li>
+            <p class="message-paragraph">
+                <b>{{message[1]}}</b>
+                {{ message[0] }}<span>{{message[2].strftime('%d-%m-%y')}}</span>
+            </p>
+        </li>
+    </ul>
     {% endif %}
+
+    {% endfor %}
 </div>
 
-<div class="grid-wrapper">
-    <form id=" sendForm" action="/send" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <p>{{ session.username }}:</p>
-        <input type="hidden" name="room_id" value="{{ id }}">
-        <ul class="grid-list">
-            <input type="submit" value="Send">
-            </li>
-            <li id="removeHover"><textarea name="content" rows="3" cols="60" maxlength="1000" required></textarea>
-            </li>
-        </ul>
-    </form>
-</div>
-
+<!-- Room has no messages -->
 {% else %}
+
+<div>
+    <p>No messages yet</p>
+    <br>
+</div>
+
+{% endif %}
+
+
+
+<form action="/send" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="hidden" name="room_id" value="{{ id }}">
+
+    <div class="textarea-wrapper">
+        <input type="text" placeholder="Type message.." name="content" autocomplete="off" maxlength="1200" required>
+        <input type="submit" value="Send">
+    </div>
+
+</form>
+
+<!-- If not logged in-->
+{% else %}
+
 <p> You must be logged in to send messages to this room.</p>
 <br>
 <a href="/">Log in</a>

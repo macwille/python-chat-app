@@ -3,24 +3,33 @@
 {% block title %} Rooms {% endblock %}
 
 {% block header %}
+
 <h1> Subjects </h1>
 <p>You can create a new subject <a href="/create/id=0">Here</a></p>
+
 {% endblock %}
 
 {% block content%}
 
 {% if session.username %}
+
 <div class="grid-wrapper">
+
     {% if subjects is defined %}
+
     <ul class="grid-list">
+
         {% for subject in subjects %}
 
         {% if subject[2] ==  0 %}
+
         <a href="{{ url_for('subject', id=subject[0]) }}">
             <li>
                 <p>{{ subject[1] }}</p>
             </li>
         </a>
+
+        <!-- Subject is not public -->
         {% else %}
         <a href="{{ url_for('subject', id=subject[0]) }}">
             <li>
@@ -30,11 +39,16 @@
         {% endif %}
 
         {% endfor %}
+
     </ul>
+
     {% endif %}
+
 </div>
 
+<!-- If not logged in-->
 {% else %}
+
 <div>
     <p>You must be logged in to view rooms</p>
     <a href="/">Log in</a>
@@ -43,5 +57,7 @@
     <br>
     <a href="/">Register</a>
 </div>
+
 {% endif %}
+
 {% endblock %}

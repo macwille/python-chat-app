@@ -4,12 +4,16 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 def create_subject(user_id, subject_name, password, content, require, db):
     hash_value = generate_password_hash(password)
+
+    if password == "":
+        password = "1234"
+
     try:
         sql = """INSERT INTO subjects (subject_name, password, content, require_permission) 
         VALUES (:subject_name, :password, :content, :require_permission)"""
 
         db.session.execute(
-            sql, {"subject_name": subject_name.strip(), "password": hash_value, "content": content.strip(), "require_permission": require})
+            sql, {"subject_name": subject_name, "password": hash_value, "content": content, "require_permission": require})
         db.session.commit()
     except:
         return False
@@ -47,12 +51,7 @@ def is_secret(subject_id, db):
     result = db.session.execute(sql, {"id": subject_id})
     secret = result.fetchone()[0]
 
-    if secret > 0:
-        print("Is secret")
-        return True
-    else:
-        print("Not Secret")
-        return False
+    return secret > 0
 
 
 def add_right(user_id, subject_name, db):
@@ -68,9 +67,9 @@ def add_right(user_id, subject_name, db):
         print("Rights added")
 
 
-def add_rights_id(user_id, subject_id, db):
+def add_right_id(user_id, subject_id, db):
     try:
-        sql = "INSERT INTO subject_rights(user_id, subject_id) VALUES(: user_id, : subject_id)"
+        sql = "INSERT INTO subject_rights(user_id, subject_id) VALUES(:user_id, :subject_id)"
         db.session.execute(
             sql, {"user_id": user_id, "subject_id": subject_id})
         db.session.commit()

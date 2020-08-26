@@ -17,12 +17,13 @@
     <fieldset>
         <legend>New Room</legend>
         <p>Name:<br>
-            <input type="text" name="room_name" maxlength="20" required></p>
+            <input type="text" name="room_name" maxlength="30" autocomplete="off" required></p>
         <input type="hidden" name="subject_id" value="{{ id }}">
         <input type="submit" value="Create">
     </fieldset>
 </form>
 
+<!-- If /id == 0 -->
 {% else %}
 
 <h2>Subject</h2>
@@ -31,9 +32,9 @@
     <fieldset>
         <legend>New Subject</legend>
         <p>Name:<br>
-            <input type="text" name="subject_name" maxlength="20" required></p>
+            <input type="text" name="subject_name" autocomplete="off" maxlength="20" required></p>
         <p>Description:<br>
-            <textarea name="content" rows="3" cols="40" maxlength="80" required></textarea></p>
+            <textarea name="content" rows="3" cols="40" maxlength="80" autocomplete="off" required></textarea></p>
         <p>Requires Password:<br>
             <label>
                 <input type="radio" id="require_yes" name="require" value="1" required>
@@ -48,9 +49,12 @@
         <input type="submit" value="Create">
     </fieldset>
 </form>
+
 {% endif %}
 
+<!-- If not logged in-->
 {% else %}
+
 <p> Log in to view the rooms</p>
 <br>
 <a href="/">Log in</a>

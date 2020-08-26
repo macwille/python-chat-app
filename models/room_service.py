@@ -8,10 +8,9 @@ def create_room(user_id, room_name, subject_id, db):
         db.session.execute(
             sql, {"room_name": room_name.strip(), "user_id": user_id, "subject_id": subject_id})
         db.session.commit()
+        return True
     except:
         return False
-    else:
-        return True
 
 
 def delete_room(room_id, db):
@@ -21,6 +20,7 @@ def delete_room(room_id, db):
             db.session.execute(sql, {"id": room_id})
             db.session.commit()
             return True
+
         except:
             return False
     else:
@@ -39,16 +39,15 @@ def get_messages(room_id, db):
     sql = "SELECT content, username, messages.created_at AS datetime, messages.id AS message_id FROM messages LEFT JOIN users ON user_id = users.id LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id=:id AND messages.visible = 1 ORDER BY messages.created_at"
     result = db.session.execute(sql, {"id": room_id})
     messages = result.fetchall()
-    if not messages:
-        return None
-    else:
-        return messages
+
+    return messages
 
 
 def get_subject(room_id, db):
     sql = "SELECT subject_id FROM rooms WHERE id = :room_id"
     result = db.session.execute(sql, {"room_id": room_id})
     subject_id = result.fetchone()[0]
+
     return subject_id
 
 
@@ -56,12 +55,11 @@ def is_owner(user_id, room_id, db):
     if session["admin"]:
         print("Admin rights")
         return True
+
     else:
         sql = "SELECT COUNT(*) FROM rooms WHERE user_id = :user_id AND id = :room_id"
         result = db.session.execute(
             sql, {"user_id": user_id, "room_id": room_id})
         is_owner = result.fetchone()[0]
-        if is_owner > 0:
-            return True
-        else:
-            return False
+
+        return is_owner > 0
