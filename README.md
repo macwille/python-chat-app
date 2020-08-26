@@ -31,7 +31,7 @@ If you want to run the website locally you will need to have PostgreSQL installe
 
 * Has access to all rooms and subjects
 
-* Can delete any room or subject
+* Can delete any room or message
 
 * Can search all messages
 
