@@ -1,15 +1,12 @@
-# Chat app - [Demo](https://chat404-web.herokuapp.com)
+# Chat app - [Website](https://chat404-web.herokuapp.com)
 
-## Demo
+## Website
 
-**try out as an admin user - username: `Admin` password: `1234` or register**
 
-Chat room website where users can send an read messages, divided into different subjects and rooms.
+a Simple website where users can chat inside chat rooms messages that are divided into different subjects.
+Writen in Python, using [Flask](https://flask.palletsprojects.com/en/1.1.x/) and [PostgreSQL](https://www.postgresql.org/).
 
-Writen in Python, using Flask and PostgreSQL.
-
-If you want to run the website locally you will need to have PostgreSQL installed.
-
+You can try out the website by registering or as an admin user **username: `Admin` password: `1234`**.
 
 ## Features
 
@@ -37,11 +34,13 @@ If you want to run the website locally you will need to have PostgreSQL installe
 
 ## Possible Future Ideas
 
-* Can edit messages, rooms and subjects
+* Can edit messages, rooms, userinfo and subjects
 
-* User can edit his/her info
+* Check names and inputs with regex
 
-* Better stylesheet
+* Grid list contain more info
+
+* User / Admin page
 
 ## Command prompts
 
@@ -71,10 +70,9 @@ You can check all used modules from the `requirements.txt` file.
 
 * **(venv)** `flask run` - Starts the app on a development server (uses port 5000) defined in app.py.
 
-
 ### PostgreSQL
 
-If you have PostgreSQL installed you can run these commands, you will need to create a database inside your cluster.
+If you have [PostgreSQL](https://www.postgresql.org/) installed you can run these commands, you will need to create a database inside your cluster.
 
 
 * `DATABASE_URL=postgresql://user:password@localhost:PORT/database-name` - template for .env configuration.
