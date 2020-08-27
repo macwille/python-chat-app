@@ -42,6 +42,8 @@ You can try out the website by registering or as an admin user **username: `Admi
 
 * User / Admin page
 
+* Limit number of subjects and rooms per user
+
 ## Command prompts
 
 After navigating to the project folder, first steps when loading is to set up virtual enviroment to hold the project and loading dependencies.
@@ -49,6 +51,15 @@ After navigating to the project folder, first steps when loading is to set up vi
 If the command `pip install -r requirements.txt` doesn't work correctly you will need to to manually download required modules using `pip install module-name`. 
 
 You can check all used modules from the `requirements.txt` file.
+
+### Enviroment
+
+To run the program localy you must create a `.env` file inside your project folder. The file will need to have the following information
+
+* `DATABASE_URL=postgresql://'user':'password'localhost:'PORT'/'database-name'`
+
+* `SECRET_KEY='generated_password'` - this information needs to be limited to local machine. 
+
 
 ### Linux & macOS
 
@@ -75,9 +86,9 @@ You can check all used modules from the `requirements.txt` file.
 If you have [PostgreSQL](https://www.postgresql.org/) installed you can run these commands, you will need to create a database inside your cluster.
 
 
-* `DATABASE_URL=postgresql://user:password@localhost:PORT/database-name` - template for .env configuration.
+* `DATABASE_URL=postgresql://'user:password'@localhost:'PORT'/'database-name'` - template for .env configuration.
 
-* `psql -U user/superuser -d database-name < schema.sql` Creates SQL-tables.
+* `psql -U 'user' -d 'database-name' < schema.sql` Creates SQL-tables.
 
-* `psql -U user/superuser -d database-name < drop.sql` Deletes all SQL-tables.
+* `psql -U 'user/superuser' -d 'database-name' < drop.sql` Deletes all SQL-tables.
 
