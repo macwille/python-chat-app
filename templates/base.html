@@ -21,7 +21,8 @@
                 <li><a href="/search">Search</a></li>
                 <li><a href="/register">Register</a></li>
                 {% if session.username %}
-                <li><a href="/logout">Log out</a></li>
+                <li style="float:right;"><a href="/logout">Log out</a></li>
+                <li style="float:right;">{{ session.username }}</li>
                 {% else %}
                 <li><a href="/">Log in</a></li>
                 {% endif %}
@@ -55,9 +56,10 @@
 
     <div class="endtext">
         <hr>
+        <br>
         <p>Github repository of this website can be found <a href="https://github.com/Viltska/python-chat-app">here</a>
         </p>
-        <p></p>
+        <br>
     </div>
 
 </body>

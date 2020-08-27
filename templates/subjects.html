@@ -5,7 +5,6 @@
 {% block header %}
 
 <h1> Subjects </h1>
-<p>You can create a new subject <a href="/create/id=0">Here</a></p>
 
 {% endblock %}
 
@@ -13,9 +12,13 @@
 
 {% if session.username %}
 
+<p>You can create a new subject <a href="/create/id=0">Here</a></p>
+
 <div class="grid-wrapper">
 
     {% if subjects is defined %}
+
+    <h3 style="text-align: center;">Choose a subject</h3>
 
     <ul class="grid-list">
 

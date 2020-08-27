@@ -36,8 +36,11 @@
 
 
 <div class="grid-wrapper">
+
     {% if rooms is defined and rooms|length > 0 %}
-    <h2>Select room</h2>
+
+    <h3 style="text-align: center;">Enter a room to chat</h3>
+
     <ul class="grid-list">
         {% for room in rooms %}
         <a href="{{ url_for('room', id=room[0]) }}">
