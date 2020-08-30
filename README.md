@@ -1,50 +1,52 @@
 # Chat app - [Website](https://chat404-web.herokuapp.com)
 
-## Website
+## Project
 
+Website where users can send messages inside chat rooms, the rooms are are divided into subjects. Once logged in the users can create new subjects and rooms, created subjects can be set to private with a password log in.
 
-a Simple website where users can chat inside chat rooms messages that are divided into different subjects.
 Writen in Python, using [Flask](https://flask.palletsprojects.com/en/1.1.x/) and [PostgreSQL](https://www.postgresql.org/).
 
-You can try out the website by registering or as an admin user **username: `Admin` password: `1234`**.
+You can try out the website by registering or try the admin user:
+
+username: `Admin` password: `1234`.
 
 ## Features
 
-* Information saved to Database
+* Information is saved to a database
 
-* Registration and login
+* Registration and login.
 
-* User can create rooms and subjects
+* User can create subjects and rooms.
 
-* Send and delete messages
+* User can send and delete his/her messages.
 
-* User can create password restricted subjects
+* User can create a password protected private subjects.
 
-* Admin user
+* Admin user.
 
-* Protected against SQL injections, XSS and CSFR attacks
+* Website is protected against SQL injections, XSS and CSRF attacks.
 
-### Admin user
+### Admin User
 
-* Has access to all rooms and subjects
+* Has access to all rooms and subjects.
 
-* Can delete any room or message
+* Can delete any room or message.
 
-* Can search all messages
+* Can search all messages.
 
-## Possible Future Ideas
+## Left Out
 
-* Can edit messages, rooms, userinfo and subjects
+* Can edit messages, rooms, userinfo and subjects.
 
-* Check names and inputs with regex
+* Check inputs with regex.
 
-* Grid list contain more info
+* Grid list contain more info.
 
-* User / Admin page
+* User / Admin page.
 
-* Limit number of subjects and rooms per user
+* Limit number of subjects and rooms per user.
 
-## Command prompts
+## Command Prompts
 
 After navigating to the project folder, first steps when loading is to set up virtual enviroment to hold the project and loading dependencies.
 
@@ -54,9 +56,9 @@ You can check all used modules from the `requirements.txt` file.
 
 ### Enviroment
 
-To run the program localy you must create a `.env` file inside your project folder. The file will need to have the following information
+To run the program localy you must create a `.env` file inside your project folder. The file will need to have the following information.
 
-* `DATABASE_URL=postgresql://'user':'password'localhost:'PORT'/'database-name'`
+* `DATABASE_URL=postgresql://'user':'password'localhost:'PORT'/'database-name'`.
 
 * `SECRET_KEY='generated_password'` - this information needs to be limited to local machine. 
 
