@@ -1,7 +1,5 @@
 # Chat app - [Website](https://chat404-web.herokuapp.com)
 
-## Project
-
 Website where users can send messages inside chat rooms, the rooms are are divided into subjects. Once logged in the users can create new subjects and rooms, created subjects can be set to private with a password log in.
 
 Writen in Python, using [Flask](https://flask.palletsprojects.com/en/1.1.x/) and [PostgreSQL](https://www.postgresql.org/).
