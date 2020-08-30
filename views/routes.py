@@ -1,6 +1,8 @@
 from app import app
 from views import subject_routes, room_routes, user_routes, message_routes
+from models import user_service
 from flask import Flask, flash, render_template, request, session, abort
+from db import db
 
 
 # Rest of the routes are imported from /views
@@ -53,5 +55,6 @@ def server_error(e):
 
 @app.errorhandler(Exception)
 def error_dump(error):
+    print(error)
     flash("Unexpected Error", "error")
     return render_template("index.html")

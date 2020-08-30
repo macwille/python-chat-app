@@ -211,14 +211,14 @@ input[type="text"] {
     margin: .4rem;
     padding: .1rem;
     background-color: white;
-    font: 15px/1;
+    font: 22px/1;
 }
 
 input[type="password"] {
     margin: .4rem;
     padding: .1rem;
     background-color: white;
-    font: 15px/1;
+    font: 22px/1;
 }
 
 input[type="submit"], button, input[type="reset"] {

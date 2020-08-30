@@ -10,8 +10,16 @@
 
 {% if session.username %}
 <div>
+
     {% if query is defined %}
-    <h4> found {{ results|length }} matches for '{{ query }}'</h4>
+
+    {% if results|length == 1 %}
+    <p> Found {{ results|length }} match for '{{ query }}'</p>
+    <!-- Plural -->
+    {% else %}
+    <p> found {{ results|length }} matches for '{{ query }}'</p>
+    {% endif %}
+
     {% endif %}
 
     {% if results is defined %}

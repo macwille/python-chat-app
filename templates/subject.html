@@ -20,7 +20,7 @@
     <form action="/subject_login" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <fieldset>
-            <legend>{{ subject_name }} Login</legend>
+            <legend>Login to {{ subject_name }}</legend>
             <input type="hidden" name="id" value="{{ id }}">
             <p>Password:<br>
                 <input type="password" name="password" required></p>

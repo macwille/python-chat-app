@@ -1,5 +1,6 @@
 from flask import session, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+from models import room_service, subject_service
 import os
 
 
@@ -46,3 +47,10 @@ def register(username, password, db):
         return False
     else:
         return login(username, password, db)
+
+def get_id(username, db):
+    sql = "SELECT id FROM users WHERE username=:username"
+    result = db.session.execute(sql, {"username": username})
+    user_id = result.fetchone()[0]
+    
+    return user_id

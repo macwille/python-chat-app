@@ -6,9 +6,13 @@
 
 {% if owner == session.username or session.admin %}
 <p>
+    You can remove messages of this room <br>
+    or
+    Delete the room
 <form action="/delete_room" method="POST">
     <input type="hidden" name="room_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    
     <input type="submit" value="Delete">
 </form>
 </p>
@@ -31,8 +35,8 @@
 <h3>Messages</h3>
 <div class="chat-wrapper">
     {% for message in messages %}
-
-    {% if message[1] == session.username or session.admin %}
+    <!-- If users message or users room or admin session -->
+    {% if message[1] == session.username or session.username == owner or session.admin %}
 
     <ul class="message-list">
         <li>
