@@ -1,4 +1,4 @@
-# Chat app - [Website](https://chat404-web.herokuapp.com)
+# Chat app - [DEMO](https://chat404-web.herokuapp.com)
 
 [![License: CC0-1.0](https://licensebuttons.net/l/zero/1.0/80x15.png)](http://creativecommons.org/publicdomain/zero/1.0/)
 
